@@ -1,0 +1,6 @@
+{
+  "name": "VARIANT | Shared Equity & Data-Driven Architecture",
+  "description": "Variant / MI: Own. Together. Smarter. A co-investment platform empowering starters to enter the housing market with shared equity and zero additional debt.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
