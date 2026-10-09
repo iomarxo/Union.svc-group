@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight, CheckCircle2, RotateCcw } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
+import { Toast } from './Toast';
 
 interface ContactFormProps {
   initialBudget?: string;
   initialPainPoint?: string;
+  onSubmitted?: (data: { name: string; email: string }) => void;
 }
 
 const STORAGE_KEY = 'union_contact_form_draft';
@@ -13,6 +15,7 @@ const STORAGE_KEY = 'union_contact_form_draft';
 export const ContactForm: React.FC<ContactFormProps> = ({
   initialBudget = '',
   initialPainPoint = '',
+  onSubmitted,
 }) => {
   const [formData, setFormData] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -45,6 +48,11 @@ export const ContactForm: React.FC<ContactFormProps> = ({
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'submitted'>('idle');
   const [hasDraft, setHasDraft] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [submittedData, setSubmittedData] = useState<{ name: string; email: string }>({
+    name: '',
+    email: '',
+  });
 
   // Sync draft to localStorage on changes
   useEffect(() => {
@@ -139,7 +147,19 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       }
       setHasDraft(false);
       setStatus('submitted');
+      setSubmittedData({
+        name: formData.name,
+        email: formData.email,
+      });
+      setShowToast(true);
       triggerCelebration();
+
+      if (onSubmitted) {
+        onSubmitted({
+          name: formData.name,
+          email: formData.email,
+        });
+      }
     }, 1200);
   };
 
@@ -342,6 +362,24 @@ export const ContactForm: React.FC<ContactFormProps> = ({
           )}
         </motion.div>
       </div>
+
+      {/* Floating Toast Notification */}
+      <Toast
+        isVisible={showToast}
+        onClose={() => setShowToast(false)}
+        title="Application Successfully Sent"
+        message={
+          submittedData.name
+            ? `Thank you, ${submittedData.name}. Your application was delivered to Union.svc.`
+            : 'Thank you! Your application was delivered to Union.svc.'
+        }
+        meta={
+          submittedData.email
+            ? `Confirmation sent to: ${submittedData.email}`
+            : 'Priority queue status: Active'
+        }
+        duration={6000}
+      />
     </section>
   );
 };

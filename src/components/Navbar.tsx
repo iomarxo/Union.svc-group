@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import React from 'react';
 
 interface NavbarProps {
   onStartClick: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onStartClick }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
@@ -51,58 +48,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onStartClick }) => {
               </span>
             </div>
           </button>
-
-          {/* Mobile hamburger button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-1.5 text-neutral-600 hover:text-neutral-900 focus:outline-none"
-            aria-label="Toggle Navigation Menu"
-          >
-            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
         </div>
       </div>
-
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-b border-neutral-200 bg-white/95 backdrop-blur-md px-4 py-4 space-y-3 font-mono text-xs">
-          <a
-            href="#process"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-neutral-600 hover:text-neutral-900 border-b border-neutral-100"
-          >
-            01 // PROCESS
-          </a>
-          <a
-            href="#calculator"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-neutral-600 hover:text-neutral-900 border-b border-neutral-100"
-          >
-            02 // CALCULATOR
-          </a>
-          <a
-            href="#solutions"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-neutral-600 hover:text-neutral-900 border-b border-neutral-100"
-          >
-            03 // SOLUTIONS
-          </a>
-          <a
-            href="#audit"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-neutral-600 hover:text-neutral-900 border-b border-neutral-100"
-          >
-            04 // FREE AUDIT
-          </a>
-          <a
-            href="#faq"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-neutral-600 hover:text-neutral-900"
-          >
-            05 // FAQ
-          </a>
-        </div>
-      )}
     </nav>
   );
 };
