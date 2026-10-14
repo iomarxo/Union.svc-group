@@ -1,59 +1,44 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Language, translations } from '../translations';
 
-const steps = [
-  {
-    num: '01 / ASSESS',
-    title: 'Understand Your Buying Power',
-    desc: "We start with your situation - income, savings, and the homes you’re considering. This defines what’s possible today, and where shared equity can help.",
-    time: 'Timeframe: 24–48 hours',
-    benefit: '0% upfront fee',
-  },
-  {
-    num: '02 / CO-INVEST',
-    title: 'Buy Together',
-    desc: 'MI co-invests in the home with you at purchase. You become the 100% homeowner. We share in the equity - so you can buy your dream home.',
-    time: 'Legal title: You alone',
-    benefit: 'No debt interest',
-  },
-  {
-    num: '03 / GROW',
-    title: 'Build Equity Over Time',
-    desc: 'As the home grows in value, so does your ownership. You can buy out MI over time, or settle when you sell. Simple, aligned, and long-term by design.',
-    time: 'Buyout flexibility',
-    benefit: 'Tranches from 5%',
-  },
-];
+interface ProcessSectionProps {
+  lang: Language;
+}
 
-export const ProcessSection: React.FC = () => {
+export const ProcessSection: React.FC<ProcessSectionProps> = ({ lang }) => {
+  const t = translations[lang].process;
+
   return (
-    <section className="sm:py-24 bg-white z-10 pt-16 pb-16 relative overflow-hidden" id="process">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+    <section className="py-20 sm:py-28 bg-[#09090b] z-10 relative overflow-hidden border-b border-white/5" id="process">
+      <div className="max-w-[1400px] mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 sm:mb-16 gap-4 sm:gap-6 border-b border-neutral-200 pb-6 sm:pb-8"
+          className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 sm:mb-16 gap-6 border-b border-white/5 pb-8"
         >
           <div>
-            <h2 className="text-[10px] font-mono text-emerald-600 uppercase tracking-widest mb-4 flex items-center gap-2">
-              <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
-              Our Process
+            <div className="flex items-center gap-4 mb-3">
+              <div className="w-8 h-px bg-[#d8b485]" />
+              <p className="text-[#d8b485] text-[10px] font-bold tracking-[0.2em] uppercase font-mono">
+                {t.badge}
+              </p>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-white leading-[1.1]">
+              {t.heading}
             </h2>
-            <h3 className="text-2xl font-medium text-neutral-900 tracking-tighter sm:text-2xl">
-              We make home ownership possible. Step by step.
-            </h3>
           </div>
-          <p className="text-xs font-light text-neutral-500 max-w-md sm:text-xs leading-relaxed">
-            MI is designed to work alongside the existing housing and financial system - not around it.
-            Each step is transparent, compliant, and built for long-term ownership.
+          <p className="text-xs sm:text-sm font-light text-zinc-400 max-w-md leading-relaxed">
+            {t.subtitle}
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-neutral-200 border border-neutral-200">
-          {steps.map((step, index) => (
+        {/* 3 Step Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {t.steps.map((step, index) => (
             <motion.div
               key={step.num}
               initial={{ opacity: 0, y: 30 }}
@@ -64,42 +49,46 @@ export const ProcessSection: React.FC = () => {
                 delay: index * 0.15,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="bg-white p-6 sm:p-10 hover:bg-neutral-50 transition-colors duration-300 flex flex-col justify-between"
+              className="theme-card p-8 sm:p-10 flex flex-col justify-between group"
             >
               <div>
-                <div className="sm:mb-6 inline-block text-xs text-neutral-500 font-mono bg-neutral-50 border-neutral-200 border rounded-sm mb-4 py-1 px-2">
+                <div className="inline-block text-[10px] text-[#d8b485] font-bold tracking-widest font-mono bg-[#d8b485]/10 border border-[#d8b485]/30 rounded-xs mb-5 py-1 px-3 uppercase">
                   {step.num}
                 </div>
-                <h4 className="sm:text-lg text-base font-medium text-neutral-900 tracking-tight mb-3">
+                <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight mb-3 group-hover:text-[#d8b485] transition-colors">
                   {step.title}
-                </h4>
-                <p className="leading-relaxed text-xs font-light text-neutral-500">
+                </h3>
+                <p className="leading-relaxed text-xs sm:text-sm font-light text-zinc-400">
                   {step.desc}
                 </p>
               </div>
-              <div className="mt-8 pt-4 border-t border-neutral-100 text-[11px] font-mono text-neutral-400 flex items-center justify-between">
+
+              <div className="mt-8 pt-4 border-t border-white/5 text-xs font-mono text-zinc-500 flex items-center justify-between">
                 <span>{step.time}</span>
-                <span className="text-emerald-600 font-medium">{step.benefit}</span>
+                <span className="text-[#d8b485] font-semibold">{step.benefit}</span>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Footnote bar */}
+        {/* Legal & Regulatory Footnote */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-20px' }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-6 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-neutral-500 p-4 bg-neutral-50 border border-neutral-200 rounded-sm"
+          className="mt-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-zinc-400 p-5 bg-[#0c0c0e] border border-white/5 rounded-xs"
         >
-          <span>Fully compliant with Dutch Civil Code (BW Boek 3 Art. 166) &amp; notary standards.</span>
+          <div className="flex items-center gap-2.5">
+            <ShieldCheck size={15} className="text-[#d8b485] shrink-0" />
+            <span>{t.footnote}</span>
+          </div>
           <a
             href="#faq"
-            className="text-neutral-900 hover:text-emerald-600 flex items-center gap-1 font-medium mt-2 sm:mt-0"
+            className="text-white hover:text-[#d8b485] flex items-center gap-1 font-bold text-[10px] tracking-wider uppercase mt-3 sm:mt-0 transition-colors"
           >
-            <span>Read legal framework</span>
-            <ArrowUpRight size={13} />
+            <span>{t.footnoteLink}</span>
+            <ArrowUpRight size={13} className="text-[#d8b485]" />
           </a>
         </motion.div>
       </div>

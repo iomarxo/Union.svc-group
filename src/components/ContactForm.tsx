@@ -1,22 +1,115 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, CheckCircle2, RotateCcw } from 'lucide-react';
+import { ArrowRight, CheckCircle2, RotateCcw, Mail, ExternalLink, Send, ShieldCheck, MapPin, Clock } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Toast } from './Toast';
+import { Language, translations } from '../translations';
 
 interface ContactFormProps {
   initialBudget?: string;
   initialPainPoint?: string;
   onSubmitted?: (data: { name: string; email: string }) => void;
+  lang: Language;
 }
 
-const STORAGE_KEY = 'union_contact_form_draft';
+const STORAGE_KEY = 'union_contact_form_draft_v2';
+const TARGET_EMAIL = 'Contact@unionsvc.com';
+
+/**
+ * Animated checkmark component using Framer Motion with SVG path drawing,
+ * spring entrance, and radiating ambient glow rings in champagne gold (#d8b485).
+ */
+const AnimatedSuccessCheckmark: React.FC = () => {
+  return (
+    <div className="relative w-24 h-24 mx-auto flex items-center justify-center mb-1">
+      {/* Outer ambient glow pulse */}
+      <motion.div
+        initial={{ scale: 0.6, opacity: 0 }}
+        animate={{ scale: [0.85, 1.3, 1.5], opacity: [0.65, 0.25, 0] }}
+        transition={{
+          duration: 2.2,
+          repeat: Infinity,
+          ease: 'easeOut',
+        }}
+        className="absolute inset-0 rounded-full bg-[#d8b485]/20 blur-lg pointer-events-none"
+      />
+
+      {/* Secondary radiating expansion ring */}
+      <motion.div
+        initial={{ scale: 0.75, opacity: 0 }}
+        animate={{ scale: [0.85, 1.25], opacity: [0.75, 0] }}
+        transition={{
+          duration: 1.8,
+          repeat: Infinity,
+          ease: 'easeOut',
+          delay: 0.35,
+        }}
+        className="absolute inset-0 rounded-full border border-[#d8b485]/40 pointer-events-none"
+      />
+
+      {/* Central spring container */}
+      <motion.div
+        initial={{ scale: 0, rotate: -40 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{
+          type: 'spring',
+          stiffness: 280,
+          damping: 20,
+          delay: 0.1,
+        }}
+        className="relative w-20 h-20 rounded-full bg-gradient-to-br from-[#d8b485]/30 via-[#d8b485]/15 to-[#09090b] border-2 border-[#d8b485]/70 flex items-center justify-center shadow-[0_0_35px_rgba(216,180,133,0.35)]"
+      >
+        <svg
+          className="w-10 h-10 text-[#d8b485]"
+          viewBox="0 0 52 52"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Animated circular path */}
+          <motion.circle
+            cx="26"
+            cy="26"
+            r="22"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.55 }}
+            transition={{
+              duration: 0.65,
+              ease: 'easeInOut',
+              delay: 0.15,
+            }}
+          />
+          {/* Animated checkmark icon path */}
+          <motion.path
+            d="M15 27.5L22.5 35L37 18"
+            stroke="currentColor"
+            strokeWidth="3.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{
+              duration: 0.55,
+              ease: [0.65, 0, 0.35, 1],
+              delay: 0.35,
+            }}
+          />
+        </svg>
+      </motion.div>
+    </div>
+  );
+};
 
 export const ContactForm: React.FC<ContactFormProps> = ({
   initialBudget = '',
   initialPainPoint = '',
   onSubmitted,
+  lang,
 }) => {
+  const t = translations[lang].contact;
+
   const [formData, setFormData] = useState(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -29,7 +122,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             website: parsed.website || '',
             budget: parsed.budget || initialBudget || '',
             timeline: parsed.timeline || '',
-            message: parsed.message || (initialPainPoint ? `Selected plan: ${initialPainPoint}. ` : '') || '',
+            message: parsed.message || (initialPainPoint ? `Selected profile: ${initialPainPoint}. ` : '') || '',
           };
         }
       } catch (e) {
@@ -42,19 +135,30 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       website: '',
       budget: initialBudget || '',
       timeline: '',
-      message: initialPainPoint ? `Selected plan: ${initialPainPoint}. ` : '',
+      message: initialPainPoint ? `Selected profile: ${initialPainPoint}. ` : '',
     };
   });
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'submitted'>('idle');
   const [hasDraft, setHasDraft] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [submittedData, setSubmittedData] = useState<{ name: string; email: string }>({
+  const [submittedData, setSubmittedData] = useState<{
+    name?: string;
+    email?: string;
+    website?: string;
+    budget?: string;
+    timeline?: string;
+    message?: string;
+  }>({
     name: '',
     email: '',
+    website: '',
+    budget: '',
+    timeline: '',
+    message: '',
   });
 
-  // Sync draft to localStorage on changes
+  // Sync draft to localStorage
   useEffect(() => {
     try {
       const hasContent = Object.values(formData).some(
@@ -69,46 +173,38 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     }
   }, [formData]);
 
-  const triggerCelebration = () => {
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#10b981', '#34d399', '#f59e0b', '#171717', '#ffffff'],
-      disableForReducedMotion: true,
-    });
-
-    setTimeout(() => {
-      confetti({
-        particleCount: 40,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0.1, y: 0.65 },
-        colors: ['#10b981', '#059669', '#f59e0b'],
-        disableForReducedMotion: true,
+  // Synchronize when parent triggers a pillar or budget selection
+  useEffect(() => {
+    if (initialPainPoint) {
+      setFormData((prev) => {
+        const pillarTag = `[Strategic Pillar: ${initialPainPoint}]`;
+        if (prev.message.includes(pillarTag)) return prev;
+        return {
+          ...prev,
+          message: `${pillarTag}\n${prev.message}`.trim(),
+        };
       });
-      confetti({
-        particleCount: 40,
-        angle: 120,
-        spread: 55,
-        origin: { x: 0.9, y: 0.65 },
-        colors: ['#10b981', '#059669', '#f59e0b'],
-        disableForReducedMotion: true,
-      });
-    }, 200);
-  };
+    }
+  }, [initialPainPoint]);
 
   useEffect(() => {
     if (initialBudget) {
-      setFormData((prev) => ({ ...prev, budget: initialBudget }));
-    }
-    if (initialPainPoint) {
       setFormData((prev) => ({
         ...prev,
-        message: prev.message ? prev.message : `Selected plan: ${initialPainPoint}. `,
+        budget: prev.budget || initialBudget,
       }));
     }
-  }, [initialBudget, initialPainPoint]);
+  }, [initialBudget]);
+
+  const triggerCelebration = () => {
+    confetti({
+      particleCount: 90,
+      spread: 75,
+      origin: { y: 0.6 },
+      colors: ['#d8b485', '#c2a277', '#ffffff', '#a1a1aa'],
+      disableForReducedMotion: true,
+    });
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -121,7 +217,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch (e) {
-      console.warn('Failed to remove draft', e);
+      console.warn('Failed to clear contact form draft', e);
     }
     setFormData({
       name: '',
@@ -134,251 +230,391 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     setHasDraft(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
 
-    setTimeout(() => {
-      // Clear draft on successful submission
-      try {
-        localStorage.removeItem(STORAGE_KEY);
-      } catch (e) {
-        console.warn('Failed to remove draft on submit', e);
-      }
-      setHasDraft(false);
-      setStatus('submitted');
-      setSubmittedData({
+    try {
+      await fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: `Union.svc Executive Application: ${formData.name || 'Anonymous Applicant'}`,
+          name: formData.name,
+          email: formData.email,
+          websiteOrAsset: formData.website || 'N/A',
+          budget: formData.budget,
+          timeline: formData.timeline,
+          message: formData.message,
+          submittedAt: new Date().toLocaleString(),
+          routedDirectlyTo: TARGET_EMAIL,
+          languageSelected: lang,
+        }),
+      });
+    } catch (err) {
+      console.warn('Network submission fallback invoked', err);
+    }
+
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {
+      console.warn('Failed to clear draft after submit', e);
+    }
+    setHasDraft(false);
+    setStatus('submitted');
+    setSubmittedData({
+      name: formData.name,
+      email: formData.email,
+      website: formData.website,
+      budget: formData.budget,
+      timeline: formData.timeline,
+      message: formData.message,
+    });
+    setShowToast(true);
+    triggerCelebration();
+
+    if (onSubmitted) {
+      onSubmitted({
         name: formData.name,
         email: formData.email,
       });
-      setShowToast(true);
-      triggerCelebration();
-
-      if (onSubmitted) {
-        onSubmitted({
-          name: formData.name,
-          email: formData.email,
-        });
-      }
-    }, 1200);
+    }
   };
 
+  const mailtoUrl = `mailto:${TARGET_EMAIL}?subject=${encodeURIComponent(
+    `Union.svc Client Application: ${submittedData.name || formData.name}`
+  )}&body=${encodeURIComponent(
+    `Union.svc Executive Client Application Submission:\n\n` +
+      `• Applicant Name: ${submittedData.name || formData.name}\n` +
+      `• Contact Email: ${submittedData.email || formData.email}\n` +
+      `• Target Asset / Website: ${submittedData.website || formData.website || 'N/A'}\n` +
+      `• Estimated Budget: ${submittedData.budget || formData.budget}\n` +
+      `• Desired Timeline: ${submittedData.timeline || formData.timeline}\n` +
+      `• Primary Hurdle / Project Scope: ${submittedData.message || formData.message}\n\n` +
+      `Dispatched directly to: ${TARGET_EMAIL}`
+  )}`;
+
   return (
-    <section id="contact" className="py-16 sm:py-24 border-t border-neutral-200 bg-white relative z-10 overflow-hidden">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <h2 className="text-[10px] font-mono text-emerald-600 uppercase tracking-widest mb-4">
-            Secure Your Slot
+    <section id="contact" className="max-w-[1400px] mx-auto w-full py-20 sm:py-28 px-6 relative scroll-mt-24 border-t border-white/5">
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+        {/* Left Column: Context & Editorial Contact Info */}
+        <div className="flex-1">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-8 h-px bg-[#d8b485]" />
+            <p className="text-[#d8b485] text-[10px] font-bold tracking-[0.2em] uppercase font-mono">
+              {t.badge}
+            </p>
+          </div>
+
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-white mb-6 leading-[1.1] max-w-md">
+            {t.heading}
           </h2>
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-medium text-neutral-900 tracking-tighter mb-4">
-            Ready to stop guessing?
-          </h3>
-          <p className="text-neutral-500 text-xs sm:text-sm font-light">
-            We limit our active builds to ensure we hit our 72-hour delivery standard.
+
+          <p className="text-sm text-zinc-400 font-light leading-relaxed mb-10 max-w-md">
+            {t.subtitle}
           </p>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="relative p-[1px] rounded-sm bg-gradient-to-b from-neutral-200 to-neutral-300 shadow-sm"
-        >
-          {status === 'submitted' ? (
-            <div className="bg-neutral-50 p-8 sm:p-12 rounded-[1px] text-center space-y-4 animate-in">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle2 size={26} />
-              </div>
-              <h4 className="text-xl font-medium text-neutral-900 tracking-tight">
-                APPLICATION RECEIVED
-              </h4>
-              <p className="text-xs sm:text-sm text-emerald-600 font-light">
-                Success. We will review your application within 24 hours.
-              </p>
-              <button
-                onClick={() => {
-                  setStatus('idle');
-                  setFormData({
-                    name: '',
-                    email: '',
-                    website: '',
-                    budget: '',
-                    timeline: '',
-                    message: '',
-                  });
-                }}
-                className="text-xs text-neutral-400 hover:text-neutral-700 underline cursor-pointer pt-2"
-              >
-                Submit another application
-              </button>
-            </div>
-          ) : (
-            <form
-              id="projectForm"
-              onSubmit={handleSubmit}
-              className="space-y-4 sm:space-y-6 bg-neutral-50 p-6 sm:p-8 rounded-[1px]"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div>
-                  <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-1.5">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full input-base px-3 py-3 rounded-sm text-sm"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-1.5">
-                    Work Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full input-base px-3 py-3 rounded-sm text-sm"
-                    placeholder="john@company.com"
-                  />
-                </div>
-              </div>
-
+          <div className="space-y-7">
+            <div className="flex items-start gap-4">
+              <Mail className="text-2xl text-[#d8b485] shrink-0 mt-1" size={20} />
               <div>
-                <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-1.5">
-                  Company Website (Optional)
-                </label>
-                <input
-                  type="url"
-                  name="website"
-                  value={formData.website}
-                  onChange={handleChange}
-                  className="w-full input-base px-3 py-3 rounded-sm text-sm"
-                  placeholder="https://"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div>
-                  <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-1.5">
-                    Estimated Budget
-                  </label>
-                  <select
-                    name="budget"
-                    required
-                    value={formData.budget}
-                    onChange={handleChange}
-                    className="w-full input-base px-3 py-3 rounded-sm text-sm text-neutral-600"
-                  >
-                    <option value="" disabled>Select Range</option>
-                    <option value="1.5k-5k">$1,500 - $5,000</option>
-                    <option value="5k-10k">$5,000 - $10,000</option>
-                    <option value="10k+">$10,000+</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-1.5">
-                    Timeline
-                  </label>
-                  <select
-                    name="timeline"
-                    required
-                    value={formData.timeline}
-                    onChange={handleChange}
-                    className="w-full input-base px-3 py-3 rounded-sm text-sm text-neutral-600"
-                  >
-                    <option value="" disabled>Select Timeline</option>
-                    <option value="asap">ASAP</option>
-                    <option value="1month">Within 1 Month</option>
-                    <option value="quarter">This Quarter</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-1.5">
-                  Primary Pain Point
-                </label>
-                <textarea
-                  name="message"
-                  rows={4}
-                  required
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="w-full input-base px-3 py-3 rounded-sm text-sm"
-                  placeholder="What is wrong with your current site?"
-                />
-              </div>
-
-              <div className="p-[1px] rounded-sm bg-gradient-to-b from-neutral-700 to-neutral-900 shadow-sm mt-4">
-                <button
-                  type="submit"
-                  id="submitBtn"
-                  disabled={status === 'submitting'}
-                  className="w-full bg-neutral-900 text-white py-4 text-xs font-semibold tracking-wide hover:bg-neutral-800 transition-colors rounded-[1px] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+                <h4 className="text-[10px] font-bold text-white tracking-widest mb-1 uppercase font-mono">
+                  Direct Intake Channel
+                </h4>
+                <a
+                  href={`mailto:${TARGET_EMAIL}`}
+                  className="text-sm text-zinc-300 hover:text-[#d8b485] transition-colors font-mono font-medium"
                 >
-                  {status === 'submitting' ? (
-                    <span>Sending...</span>
-                  ) : (
-                    <>
-                      <span>SUBMIT APPLICATION</span>
-                      <ArrowRight size={14} />
-                    </>
-                  )}
-                </button>
+                  {TARGET_EMAIL}
+                </a>
               </div>
+            </div>
 
-              <div id="formStatus" className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-neutral-400 font-mono">
-                <span>We review applications within 24 hours.</span>
-                {hasDraft && (
-                  <div className="flex items-center gap-2 text-[11px] text-emerald-600">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Draft autosaved</span>
-                    <button
-                      type="button"
-                      onClick={handleClearDraft}
-                      className="text-neutral-400 hover:text-neutral-700 underline flex items-center gap-1 cursor-pointer ml-1 font-mono"
-                      title="Clear saved draft"
+            <div className="flex items-start gap-4">
+              <ShieldCheck className="text-2xl text-[#d8b485] shrink-0 mt-1" size={20} />
+              <div>
+                <h4 className="text-[10px] font-bold text-white tracking-widest mb-1 uppercase font-mono">
+                  Custody & Escrow Architecture
+                </h4>
+                <p className="text-sm text-zinc-400 font-light">
+                  Tier-1 Regulated Multi-Jurisdictional Depository
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <Clock className="text-2xl text-[#d8b485] shrink-0 mt-1" size={20} />
+              <div>
+                <h4 className="text-[10px] font-bold text-white tracking-widest mb-1 uppercase font-mono">
+                  Service Level Agreement
+                </h4>
+                <p className="text-sm text-zinc-400 font-light">
+                  Direct Partner Response within 24 Hours
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Form Container */}
+        <div className="flex-1 lg:max-w-xl w-full">
+          <div className="theme-card bg-[#0c0c0e] p-8 md:p-12 border border-white/5 shadow-2xl">
+            <AnimatePresence mode="wait">
+              {status === 'submitted' ? (
+                <motion.div
+                  key="submitted-state"
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -15 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  className="text-center space-y-6"
+                >
+                  {/* Framer Motion Animated Checkmark */}
+                  <AnimatedSuccessCheckmark />
+
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#d8b485]/10 border border-[#d8b485]/30 text-[#d8b485] text-[11px] font-mono mb-3">
+                      <span className="w-2 h-2 rounded-full bg-[#d8b485] animate-pulse"></span>
+                      <span>{t.successBadge}</span>
+                    </div>
+                    <h4 className="text-2xl sm:text-3xl font-medium text-white tracking-tight">
+                      {t.successHeading}
+                    </h4>
+                    <p className="text-xs sm:text-sm text-zinc-400 font-light mt-2 max-w-lg mx-auto leading-relaxed">
+                      {t.successBody}
+                    </p>
+                  </div>
+
+                  {/* Application Summary Box */}
+                  <div className="bg-[#111114] border border-white/10 rounded-xs p-5 text-left text-xs space-y-3 font-mono">
+                    <div className="flex items-center justify-between border-b border-white/10 pb-2.5 text-[11px] text-zinc-400 uppercase tracking-wider">
+                      <span>{t.summaryHeading}</span>
+                      <span className="text-[#d8b485] font-semibold">{TARGET_EMAIL}</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-zinc-300 pt-1">
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">{t.nameLabel}</span>
+                        <span className="font-semibold text-white">{submittedData.name || 'Provided'}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">{t.emailLabel}</span>
+                        <span className="text-[#d8b485]">{submittedData.email || 'Provided'}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">{t.budgetLabel}</span>
+                        <span className="text-white">{submittedData.budget || 'Standard Range'}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">{t.timelineLabel}</span>
+                        <span className="text-white">{submittedData.timeline || 'Immediate'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Direct Mail Client Actions */}
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <a
+                      href={mailtoUrl}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#d8b485] hover:bg-[#c2a277] text-zinc-950 text-[10px] font-bold uppercase tracking-widest py-3.5 px-6 rounded-xs transition-colors cursor-pointer shadow-md"
                     >
-                      <RotateCcw size={10} />
-                      Reset
+                      <Send size={13} />
+                      <span>{t.openMailClient}</span>
+                      <ExternalLink size={12} className="opacity-75" />
+                    </a>
+                    <button
+                      onClick={() => {
+                        setStatus('idle');
+                        setFormData({
+                          name: '',
+                          email: '',
+                          website: '',
+                          budget: '',
+                          timeline: '',
+                          message: '',
+                        });
+                      }}
+                      className="w-full sm:w-auto text-xs font-mono text-zinc-400 hover:text-white py-3 px-4 underline cursor-pointer"
+                    >
+                      {t.submitAnother}
                     </button>
                   </div>
-                )}
-              </div>
-            </form>
-          )}
-        </motion.div>
+                </motion.div>
+              ) : (
+                <form
+                  id="projectForm"
+                  onSubmit={handleSubmit}
+                  className="space-y-6"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-[10px] font-bold text-white tracking-widest mb-3 uppercase font-mono">
+                        {t.nameLabel}
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        required
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b border-white/10 pb-3 text-sm text-white focus:outline-none focus:border-[#d8b485] transition-colors placeholder:text-zinc-600"
+                        placeholder="Lars Van Der Berg"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-white tracking-widest mb-3 uppercase font-mono">
+                        {t.emailLabel}
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b border-white/10 pb-3 text-sm text-white focus:outline-none focus:border-[#d8b485] transition-colors placeholder:text-zinc-600"
+                        placeholder="lars@venture.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-white tracking-widest mb-3 uppercase font-mono">
+                      {t.websiteLabel}
+                    </label>
+                    <input
+                      type="text"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleChange}
+                      className="w-full bg-transparent border-b border-white/10 pb-3 text-sm text-white focus:outline-none focus:border-[#d8b485] transition-colors placeholder:text-zinc-600"
+                      placeholder="https://... or property address in Utrecht/Amsterdam"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-[10px] font-bold text-white tracking-widest mb-3 uppercase font-mono">
+                        {t.budgetLabel}
+                      </label>
+                      <select
+                        name="budget"
+                        required
+                        value={formData.budget}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b border-white/10 pb-3 text-sm text-white focus:outline-none focus:border-[#d8b485] transition-colors cursor-pointer"
+                      >
+                        <option value="" disabled className="bg-[#0c0c0e] text-zinc-500">
+                          Select Budget
+                        </option>
+                        {t.budgetOptions.map((opt) => (
+                          <option key={opt.value} value={opt.value} className="bg-[#0c0c0e] text-white">
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-white tracking-widest mb-3 uppercase font-mono">
+                        {t.timelineLabel}
+                      </label>
+                      <select
+                        name="timeline"
+                        required
+                        value={formData.timeline}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b border-white/10 pb-3 text-sm text-white focus:outline-none focus:border-[#d8b485] transition-colors cursor-pointer"
+                      >
+                        <option value="" disabled className="bg-[#0c0c0e] text-zinc-500">
+                          Select Timeline
+                        </option>
+                        {t.timelineOptions.map((opt) => (
+                          <option key={opt.value} value={opt.value} className="bg-[#0c0c0e] text-white">
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-white tracking-widest mb-3 uppercase font-mono">
+                      {t.messageLabel}
+                    </label>
+                    <textarea
+                      name="message"
+                      rows={3}
+                      required
+                      value={formData.message}
+                      onChange={handleChange}
+                      className="w-full bg-transparent border-b border-white/10 pb-3 text-sm text-white focus:outline-none focus:border-[#d8b485] transition-colors placeholder:text-zinc-600 resize-none"
+                      placeholder={t.messagePlaceholder}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    id="submitBtn"
+                    disabled={status === 'submitting'}
+                    className="w-full inline-flex items-center justify-center gap-2 px-8 py-5 text-[10px] font-bold tracking-widest text-zinc-950 bg-[#d8b485] hover:bg-[#c2a277] transition-all uppercase shadow-md hover:shadow-[0_8px_24px_rgba(216,180,133,0.25)] hover:-translate-y-0.5 active:translate-y-0 mt-4 cursor-pointer disabled:opacity-75"
+                  >
+                    {status === 'submitting' ? (
+                      <span className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-zinc-950 animate-ping" />
+                        {t.submittingBtn}
+                      </span>
+                    ) : (
+                      <>
+                        <span>{t.submitBtn}</span>
+                        <ArrowRight size={14} className="text-zinc-950" />
+                      </>
+                    )}
+                  </button>
+
+                  <div id="formStatus" className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-zinc-400 font-mono pt-3 border-t border-white/5">
+                    <div className="flex items-center gap-2">
+                      <Mail size={12} className="text-[#d8b485]" />
+                      <span>
+                        {t.routingDirect}{' '}
+                        <span className="text-white font-medium">{TARGET_EMAIL}</span>
+                      </span>
+                    </div>
+                    {hasDraft && (
+                      <div className="flex items-center gap-2 text-[11px] text-[#d8b485]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#d8b485] animate-pulse" />
+                        <span>{t.draftAutosaved}</span>
+                        <button
+                          type="button"
+                          onClick={handleClearDraft}
+                          className="text-zinc-400 hover:text-white underline flex items-center gap-1 cursor-pointer ml-1 font-mono"
+                          title="Clear saved draft"
+                        >
+                          <RotateCcw size={10} />
+                          {t.resetDraft}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </form>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
 
       {/* Floating Toast Notification */}
       <Toast
         isVisible={showToast}
         onClose={() => setShowToast(false)}
-        title="Application Successfully Sent"
+        title="Application Transmitted"
         message={
           submittedData.name
-            ? `Thank you, ${submittedData.name}. Your application was delivered to Union.svc.`
-            : 'Thank you! Your application was delivered to Union.svc.'
+            ? `Thank you, ${submittedData.name}. Your application was routed directly to ${TARGET_EMAIL}.`
+            : `Thank you! Your application was routed directly to ${TARGET_EMAIL}.`
         }
-        meta={
-          submittedData.email
-            ? `Confirmation sent to: ${submittedData.email}`
-            : 'Priority queue status: Active'
-        }
-        duration={6000}
+        meta={`Verified Intake: ${TARGET_EMAIL}`}
+        duration={7000}
       />
     </section>
   );

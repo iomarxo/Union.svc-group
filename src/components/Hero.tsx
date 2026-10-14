@@ -1,130 +1,134 @@
 import React from 'react';
-import { FileBarChart2 } from 'lucide-react';
+import { FileBarChart2, ArrowRight, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Language, translations } from '../translations';
 
 interface HeroProps {
   onStartClick: () => void;
   onAuditClick: () => void;
+  lang: Language;
 }
 
-const trustMetrics = [
-  { value: 'Up to 40%', label: 'That we will co-invest' },
-  { value: '0% interest', label: 'No extra debt' },
-  { value: 'Regulated', label: 'By Dutch law' },
-  { value: 'Only for starters', label: 'To get them on the market quicker' },
-];
+export const Hero: React.FC<HeroProps> = ({ onStartClick, onAuditClick, lang }) => {
+  const t = translations[lang].hero;
 
-export const Hero: React.FC<HeroProps> = ({ onStartClick, onAuditClick }) => {
   return (
-    <section className="sm:pt-32 sm:pb-24 sm:px-6 max-w-6xl z-10 mr-auto ml-auto pt-24 pr-4 pb-12 pl-4 relative overflow-hidden">
+    <section className="max-w-[1400px] mx-auto px-6 flex flex-col items-start text-left pt-36 sm:pt-40 pb-16 sm:pb-24 relative w-full z-10">
+      {/* Decorative Warm Ambient Glows */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#d8b485]/5 rounded-full blur-[140px] pointer-events-none -z-10" />
+      <div className="absolute top-1/3 left-10 w-72 h-72 bg-zinc-800/15 rounded-full blur-3xl pointer-events-none -z-10" />
+
+      {/* Rotated Edge Watermark */}
+      <div className="absolute right-2 top-[55%] -translate-y-1/2 rotate-90 origin-right text-[9px] tracking-[0.5em] text-zinc-500 uppercase hidden xl:block pointer-events-none font-mono">
+        {lang === 'ar' ? 'معايير أمناء الحفظ الدولية' : 'Institutional Tier-1 Infrastructure'}
+      </div>
+
+      {/* Circular Heritage Insignia Seal */}
+      <div className="absolute right-8 sm:right-12 bottom-28 w-32 h-32 rounded-full border border-[#d8b485]/30 hidden lg:flex items-center justify-center backdrop-blur-sm pointer-events-none z-10">
+        <div className="text-center flex flex-col items-center justify-center">
+          <span className="block text-[#d8b485] text-[9px] font-bold tracking-widest mb-1 uppercase font-mono">
+            UNION
+          </span>
+          <span className="block text-3xl font-serif text-[#d8b485] leading-none mb-1">
+            U
+          </span>
+          <span className="block text-zinc-500 text-[8px] tracking-widest uppercase font-mono">
+            EST. 2024
+          </span>
+        </div>
+      </div>
+
+      {/* Kicker with Champagne Gold Divider */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-col md:pl-12 sm:pl-8 sm:gap-8 border-neutral-200 border-l pb-20 pl-6 relative gap-y-6 items-start"
+        className="flex items-center gap-4 mb-6"
       >
-        {/* Decorator Dots */}
-        <div
-          className="absolute -left-[5px] top-0 w-[9px] h-[9px] bg-white border border-neutral-200"
-          aria-hidden="true"
-        />
-
-        {/* Status Badge */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 bg-neutral-50/80 backdrop-blur-sm border border-neutral-200 rounded-full shadow-sm"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping"></span>
-            <span className="inline-flex bg-amber-400 w-2 h-2 rounded-full relative"></span>
-          </span>
-          <span className="text-[10px] uppercase font-medium text-amber-500 tracking-wide font-mono">
-            Pilot launch soon
-          </span>
-        </motion.div>
-
-        {/* Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="sm:text-5xl md:text-7xl leading-[1.1] text-3xl font-medium text-neutral-900 tracking-tighter"
-        >
-          Own. Together. Smarter.
-          <br />
-          <span className="text-2xl sm:text-3xl md:text-4xl text-neutral-400 font-normal">
-            A smarter way to buy a home, without doing it alone.
-          </span>
-        </motion.h1>
-
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="md:text-base leading-relaxed text-sm font-light text-neutral-500 max-w-xl"
-        >
-          MI co-invests alongside you, lowering the barrier to homeownership.
-          No extra debt. No hidden incentives. Just aligned interests.
-        </motion.p>
-
-        {/* Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 sm:mt-6 w-full sm:w-auto"
-        >
-          {/* Primary Button */}
-          <div className="p-[1px] rounded-sm bg-gradient-to-b from-neutral-700 to-neutral-900 w-full sm:w-auto shadow-sm">
-            <button
-              onClick={onStartClick}
-              className="cursor-pointer block hover:bg-neutral-800 transition-colors text-xs font-semibold text-white tracking-wide text-center bg-neutral-900 w-full h-full rounded-[1px] py-3.5 px-6 font-mono"
-            >
-              START YOUR PROJECT
-            </button>
-          </div>
-
-          {/* Secondary Button */}
-          <div className="p-[1px] rounded-sm bg-gradient-to-b from-neutral-200 to-neutral-300 w-full sm:w-auto shadow-sm hover:from-neutral-300 hover:to-neutral-400 transition-all">
-            <button
-              onClick={onAuditClick}
-              className="cursor-pointer hover:text-black transition-colors flex items-center justify-center gap-2 text-xs font-medium text-neutral-600 text-center bg-white/90 w-full h-full rounded-[1px] py-3.5 px-6 backdrop-blur-sm font-mono"
-            >
-              <FileBarChart2 size={14} className="text-neutral-500" />
-              <span>GET FREE SITE AUDIT</span>
-            </button>
-          </div>
-        </motion.div>
+        <div className="w-12 h-px bg-[#d8b485]" />
+        <p className="text-[#d8b485] text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase leading-relaxed font-mono">
+          {t.pilotBadge} &bull; {lang === 'ar' ? 'معايير أمناء الحفظ الدولية' : 'Tier-1 Programmable Escrow'}
+        </p>
       </motion.div>
 
-      {/* Fade Overlay for smoother transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white via-white/80 to-transparent z-20 pointer-events-none" />
+      {/* Massive Architectural Headline */}
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-white mb-2 leading-none uppercase"
+      >
+        {t.titlePrimary}
+      </motion.h1>
 
-      {/* Trust/Stats Grid */}
+      {/* Subtitle with Horizontal Gold Rule */}
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-8 w-full max-w-3xl"
+      >
+        <h2 className="text-xl sm:text-2xl md:text-4xl font-light tracking-[0.25em] text-zinc-300 uppercase whitespace-nowrap">
+          {t.titleSecondary}
+        </h2>
+        <div className="hidden sm:block flex-grow h-px bg-[#d8b485]/40" />
+      </motion.div>
+
+      {/* Paragraph Summary */}
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="text-sm md:text-base text-zinc-300 max-w-xl font-light mb-10 sm:mb-12 leading-relaxed"
+      >
+        {t.subtitle}
+      </motion.p>
+
+      {/* Action Buttons */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="flex flex-col sm:flex-row items-center gap-5 sm:gap-8 mb-16 w-full sm:w-auto"
+      >
+        <button
+          onClick={onStartClick}
+          className="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2.5 px-8 py-4 text-[10px] sm:text-xs font-bold tracking-widest text-zinc-950 bg-[#d8b485] hover:bg-[#c2a277] transition-all uppercase shadow-md hover:shadow-[0_8px_24px_rgba(216,180,133,0.25)] hover:-translate-y-0.5 active:translate-y-0"
+        >
+          <span>{t.startBtn}</span>
+          <ArrowRight size={14} className="text-zinc-950" />
+        </button>
+
+        <button
+          onClick={onAuditClick}
+          className="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2 text-[10px] sm:text-xs font-bold tracking-widest text-white uppercase border-b border-white/30 pb-1 hover:border-[#d8b485] hover:text-[#d8b485] transition-colors"
+        >
+          <FileBarChart2 size={13} className="text-[#d8b485]" />
+          <span>{t.auditBtn}</span>
+        </button>
+      </motion.div>
+
+      {/* Institutional Metrics Strip */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-30 mt-8 sm:mt-16 grid grid-cols-2 md:grid-cols-4 border-y border-neutral-200 bg-white/60 backdrop-blur-sm"
+        className="w-full border-y border-white/5 bg-[#09090b]/80 backdrop-blur-md py-6 sm:py-8 grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"
       >
-        {trustMetrics.map((metric, i) => (
+        {t.metrics.map((metric, i) => (
           <div
-            key={metric.value}
-            className={`p-4 sm:p-8 text-center ${
-              i % 2 === 0 ? 'border-r border-neutral-200' : ''
-            } ${i === 1 ? 'md:border-r border-neutral-200' : ''} ${
-              i >= 2 ? 'border-t md:border-t-0 border-neutral-200' : ''
-            }`}
+            key={i}
+            className="flex items-start gap-4 p-2 group hover:bg-white/[0.02] transition-colors"
           >
-            <div className="sm:text-2xl md:text-3xl text-xl font-medium text-neutral-900 tracking-tighter mb-1">
-              {metric.value}
-            </div>
-            <div className="text-[9px] sm:text-[10px] uppercase text-neutral-500 tracking-widest font-mono">
-              {metric.label}
+            <div className="w-1.5 h-1.5 rounded-full bg-[#d8b485] mt-2.5 shrink-0" />
+            <div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight mb-1 font-mono group-hover:text-[#d8b485] transition-colors">
+                {metric.value}
+              </div>
+              <p className="text-[10px] sm:text-[11px] font-bold text-zinc-400 tracking-widest uppercase">
+                {metric.label}
+              </p>
             </div>
           </div>
         ))}

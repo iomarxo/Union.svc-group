@@ -1,33 +1,39 @@
 import React from 'react';
-import { X, Check, ShieldCheck, ArrowRight } from 'lucide-react';
+import { X, Check, ShieldCheck, ArrowRight, Landmark } from 'lucide-react';
+import { Language, translations } from '../translations';
 
 interface CaseStudyModalProps {
   isOpen: boolean;
   onClose: () => void;
   onStartClick: () => void;
+  lang: Language;
 }
 
 export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   isOpen,
   onClose,
   onStartClick,
+  lang,
 }) => {
   if (!isOpen) return null;
 
+  const t = translations[lang].caseStudy;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-neutral-900/60 backdrop-blur-xs animate-in">
-      <div className="relative w-full max-w-2xl bg-white rounded-sm border border-neutral-200 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md animate-in">
+      <div className="relative w-full max-w-2xl bg-[#0c0c0e] rounded-xs border border-white/10 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-neutral-200 flex items-center justify-between bg-neutral-50">
+        <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between bg-[#111114]">
           <div className="flex items-center gap-2.5">
-            <div className="w-2.5 h-2.5 bg-neutral-900"></div>
-            <span className="text-xs font-mono font-semibold tracking-wider text-neutral-900">
-              CASE DOSSIER // UTRECHT 2025
+            <div className="w-2.5 h-2.5 bg-[#d8b485] rounded-[1px] shadow-[0_0_8px_#d8b485]"></div>
+            <span className="text-xs font-mono font-bold tracking-wider uppercase text-white">
+              {t.badge}
             </span>
           </div>
           <button
             onClick={onClose}
-            className="text-neutral-400 hover:text-neutral-800 p-1 cursor-pointer transition-colors"
+            className="text-zinc-400 hover:text-white p-1 cursor-pointer transition-colors"
+            aria-label="Close modal"
           >
             <X size={18} />
           </button>
@@ -36,78 +42,76 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
         {/* Content body */}
         <div className="p-6 sm:p-8 overflow-y-auto space-y-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xs text-[10px] font-mono mb-2">
-              <Check size={11} /> Verified Transaction
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#d8b485]/10 text-[#d8b485] border border-[#d8b485]/30 rounded-full text-[10px] font-mono mb-2.5 uppercase tracking-wider font-semibold">
+              <Check size={11} />
+              <span>{t.tag}</span>
             </div>
-            <h3 className="text-xl sm:text-2xl font-medium text-neutral-900 tracking-tight">
-              Lars &amp; Sarah: Breaking the €1,950/mo Rent Cycle
+            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              {t.title}
             </h3>
-            <p className="text-xs text-neutral-500 font-light mt-1">
-              Location: Utrecht Oost • Combined Income: €58,000/yr • Savings: €22,000
+            <p className="text-xs text-zinc-400 font-light mt-1 font-mono">
+              {t.meta}
             </p>
           </div>
 
           {/* Numbers comparison table */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-neutral-50 border border-neutral-200 p-4 rounded-xs font-mono text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#111114] border border-white/5 p-4 rounded-xs font-mono text-center">
             <div>
-              <span className="text-[10px] text-neutral-400 block uppercase">Target Price</span>
-              <span className="text-sm font-semibold text-neutral-900">€385,000</span>
+              <span className="text-[10px] text-zinc-500 block uppercase">{t.statTarget}</span>
+              <span className="text-sm font-semibold text-white">€385,000</span>
             </div>
             <div>
-              <span className="text-[10px] text-neutral-400 block uppercase">Bank Cap</span>
-              <span className="text-sm font-semibold text-neutral-400">€261,000</span>
+              <span className="text-[10px] text-zinc-500 block uppercase">{t.statBank}</span>
+              <span className="text-sm font-semibold text-zinc-400">€261,000</span>
             </div>
             <div>
-              <span className="text-[10px] text-neutral-400 block uppercase">Union.svc Share</span>
-              <span className="text-sm font-semibold text-emerald-600">+€102,000</span>
+              <span className="text-[10px] text-[#d8b485] block uppercase font-bold">{t.statUnion}</span>
+              <span className="text-sm font-bold text-[#d8b485]">+€102,000</span>
             </div>
             <div>
-              <span className="text-[10px] text-neutral-400 block uppercase">Monthly Saving</span>
-              <span className="text-sm font-semibold text-neutral-900">€610/mo</span>
+              <span className="text-[10px] text-zinc-500 block uppercase">{t.statSaving}</span>
+              <span className="text-sm font-semibold text-white">€610/mo</span>
             </div>
           </div>
 
-          <div className="space-y-3 text-xs sm:text-sm font-light text-neutral-600 leading-relaxed">
-            <h4 className="text-xs font-mono uppercase font-semibold text-neutral-900 tracking-wider">
-              The Challenge
+          <div className="space-y-4 text-xs sm:text-sm font-light text-zinc-300 leading-relaxed">
+            <h4 className="text-xs font-mono uppercase font-bold text-[#d8b485] tracking-wider">
+              {t.section1Title}
             </h4>
-            <p>
-              Lars (UX Designer, 28) and Sarah (Teacher, 27) were paying €1,950/month in non-regulated rent in Utrecht. Despite solid jobs, banks strictly capped their mortgage at €261,000. In a market where starter apartments start at €360k+, they were locked out.
-            </p>
+            <p>{t.section1Body}</p>
 
-            <h4 className="text-xs font-mono uppercase font-semibold text-neutral-900 tracking-wider pt-2">
-              The Union.svc Architecture
+            <h4 className="text-xs font-mono uppercase font-bold text-[#d8b485] tracking-wider pt-2">
+              {t.section2Title}
             </h4>
-            <p>
-              Through Union.svc&apos;s co-investment model, Lars &amp; Sarah paired their maximum bank mortgage (€261k) with €22k personal savings and €102k in Union.svc shared equity. Zero secondary debt. No interest burden.
-            </p>
+            <p>{t.section2Body}</p>
 
-            <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xs text-xs font-mono text-emerald-900 space-y-2">
-              <div className="font-semibold flex items-center gap-1.5">
-                <ShieldCheck size={14} className="text-emerald-700" />
-                <span>Long-Term Alignment</span>
+            <div className="p-4 bg-[#111114] border border-[#d8b485]/30 rounded-xs text-xs font-mono text-zinc-200 space-y-2">
+              <div className="font-semibold flex items-center gap-1.5 text-[#d8b485]">
+                <ShieldCheck size={15} />
+                <span>{t.calloutTitle}</span>
               </div>
-              <p className="font-sans font-light text-neutral-700">
-                Lars &amp; Sarah own 100% of the home on title deeds. After 3 years, they refinanced their standard mortgage following salary raises and bought back 15% of Union.svc&apos;s share at fair market valuation.
+              <p className="font-sans font-light text-zinc-400">
+                {t.calloutBody}
               </p>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="p-4 px-6 border-t border-neutral-200 bg-neutral-50 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="text-[11px] font-mono text-neutral-500">
-            Certified by Dutch Notarial Register
+        <div className="p-4 px-6 border-t border-white/5 bg-[#111114] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span className="text-[11px] font-mono text-zinc-400 flex items-center gap-1.5">
+            <Landmark size={12} className="text-[#d8b485]" />
+            <span>{t.footerCert}</span>
           </span>
           <button
             onClick={() => {
               onClose();
               onStartClick();
             }}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-mono px-5 py-2.5 rounded-xs transition-colors cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#d8b485] hover:bg-[#c2a277] text-zinc-950 text-[10px] font-bold uppercase tracking-widest px-6 py-3 rounded-xs transition-colors cursor-pointer shadow-md"
           >
-            <span>Model Your Own Scenario</span>
-            <ArrowRight size={13} />
+            <span>{t.footerCta}</span>
+            <ArrowRight size={13} className="text-zinc-950" />
           </button>
         </div>
       </div>

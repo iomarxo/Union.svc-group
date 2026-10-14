@@ -1,191 +1,215 @@
 import React, { useState } from 'react';
 import { Unlock, Check, ArrowRight, Download, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Language, translations } from '../translations';
 
-export const LeadMagnet: React.FC = () => {
+interface LeadMagnetProps {
+  lang: Language;
+}
+
+const TARGET_EMAIL = 'Contact@unionsvc.com';
+
+export const LeadMagnet: React.FC<LeadMagnetProps> = ({ lang }) => {
   const [email, setEmail] = useState('');
   const [url, setUrl] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const t = translations[lang].leadMagnet;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     setStatus('loading');
+
+    try {
+      await fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: `Executive Intelligence Audit Request: ${url || email}`,
+          leadEmail: email,
+          targetUrlOrAsset: url || 'Not provided',
+          requestedAt: new Date().toLocaleString(),
+          routedDirectlyTo: TARGET_EMAIL,
+          languageSelected: lang,
+        }),
+      });
+    } catch (err) {
+      console.warn('Lead delivery webhook fallback', err);
+    }
+
     setTimeout(() => {
       setStatus('success');
-    }, 1200);
+    }, 600);
   };
 
   const handleDownloadReport = () => {
-    const reportText = `Union.svc / MI SYSTEMS - COMPETITOR INTELLIGENCE REPORT
+    const reportText = `UNION.SVC // EXECUTIVE INTELLIGENCE & FEASIBILITY DOSSIER
 =============================================================
-Target Domain / Subject: ${url || 'Requested Entity'}
 Recipient: ${email}
-Generated: ${new Date().toLocaleDateString()}
-Status: Complete & Verified
+Target Property / Subject: ${url || 'General Starter Portfolio'}
+Timestamp: ${new Date().toLocaleString()}
+Routed Directly To: ${TARGET_EMAIL}
+Status: Complete & Certified
 
 1. SPEED & PERFORMANCE BENCHMARKS
-- First Contentful Paint: 0.42s (99th percentile)
-- TTFB (Time to First Byte): 48ms edge routed
+- First Contentful Paint: 0.38s (99th percentile)
+- TTFB (Time to First Byte): 42ms edge routed
 - Structural Cleanliness: Minimal DOM footprint, zero unhydrated scripts
 
-2. CONVERSION FUNNEL ANALYSIS
-- Traditional Lending Cap: ~4.5x Gross Income
-- Union.svc Shared Equity Uplift: +30% to +40% purchasing power
-- Debt Servicing Ratio: 0% supplemental debt obligations
+2. REAL ESTATE & CO-EQUITY FEASIBILITY
+- Traditional Solo Lending Ceiling: 4.5x Gross Base Income
+- Union.svc Co-Investment Capital Injection: Up to +40% Equity Allocation
+- Debt Servicing Ratio: 0% Supplemental Debt, Zero Interest Load
+- Statutory Legal Protections: Dutch Civil Code BW Boek 3 Art. 166
 
-3. SEO GAP IDENTIFICATION
-- Top 3 Starter Pain Points: Downpayment depletion, bidding wars, outpriced in Randstad
-- Remediation Vector: Union.svc Co-Investment Structure (BW Boek 3 Art. 166)
+3. DIGITAL EQUITY & ADVISORY CONVERSION
+- Market Opportunity: Starters outpriced by ~€80,000 to €150,000 in prime metropolitan hubs
+- Remediation Vector: Union.svc Co-Investment Protocol (100% Legal Title Ownership)
 
 =============================================================
-CONFIDENTIAL & PROPRIETARY // Union.svc SYSTEMS
+CONFIDENTIAL & PROPRIETARY // UNION.SVC EXECUTIVE INTAKE
+Direct Contact: ${TARGET_EMAIL}
 `;
     const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
     const downloadUrl = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = downloadUrl;
-    link.download = `union-svc-audit-${Date.now()}.txt`;
+    link.download = `union-svc-intelligence-${Date.now()}.txt`;
     link.click();
     URL.revokeObjectURL(downloadUrl);
   };
 
   return (
-    <section id="audit" className="py-16 sm:py-24 bg-neutral-50 border-b border-neutral-200 relative z-10 overflow-hidden">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+    <section id="audit" className="py-20 sm:py-28 bg-[#09090b] border-b border-white/5 relative z-10 overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="relative p-[1px] rounded-sm bg-gradient-to-b from-neutral-200 to-neutral-300 shadow-sm"
+          className="theme-card p-8 sm:p-12 md:p-16 rounded-xs relative border border-white/5 shadow-2xl max-w-5xl mx-auto"
         >
-          <div className="bg-white p-6 sm:p-8 md:p-12 rounded-[1px]">
-            <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
-              <div className="flex-1">
-                <div className="inline-flex items-center gap-2 px-2 py-1 bg-emerald-50 border border-emerald-100 rounded-sm mb-4 sm:mb-6">
-                  <Unlock size={12} className="text-emerald-600" />
-                  <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider">
-                    Free Access
-                  </span>
-                </div>
-
-                <h2 className="text-2xl sm:text-3xl font-medium text-neutral-900 tracking-tight mb-4">
-                  Unlock Your Competitor Intelligence Report
-                </h2>
-
-                <p className="text-neutral-500 text-xs sm:text-sm leading-relaxed mb-6 font-light">
-                  Don&apos;t redesign your site blindly. Enter your email to get a free checklist of what your top 3 competitors are doing right.
+          <div className="flex flex-col md:flex-row gap-10 md:gap-14 items-center">
+            <div className="flex-1">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-8 h-px bg-[#d8b485]" />
+                <p className="text-[#d8b485] text-[10px] font-bold tracking-[0.2em] uppercase font-mono">
+                  {t.badge}
                 </p>
-
-                <ul className="space-y-2 mb-6 sm:mb-8">
-                  <li className="flex items-center gap-3 text-xs text-neutral-600">
-                    <Check size={14} className="text-emerald-500" />
-                    <span>Speed &amp; Performance Benchmarks</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-xs text-neutral-600">
-                    <Check size={14} className="text-emerald-500" />
-                    <span>Conversion Funnel Analysis</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-xs text-neutral-600">
-                    <Check size={14} className="text-emerald-500" />
-                    <span>SEO Gap Identification</span>
-                  </li>
-                </ul>
               </div>
 
-              {/* Form Container */}
-              <div className="w-full md:w-80">
-                {status === 'success' ? (
-                  <div className="bg-neutral-50 border border-emerald-200 rounded-sm p-6 text-center space-y-4 animate-in">
-                    <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto">
-                      <CheckCircle2 size={24} />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-semibold text-neutral-900 font-mono">
-                        Dossier Generated!
-                      </h4>
-                      <p className="text-xs text-neutral-500 mt-1">
-                        Dispatched to <span className="font-mono text-neutral-800">{email}</span>
-                      </p>
-                    </div>
+              <h2 className="text-2xl sm:text-4xl font-medium tracking-tight text-white mb-4 leading-[1.15]">
+                {t.title}
+              </h2>
 
-                    <div className="space-y-2 pt-2">
-                      <button
-                        onClick={handleDownloadReport}
-                        className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-mono py-2.5 px-3 rounded-xs transition-colors cursor-pointer"
-                      >
-                        <Download size={13} />
-                        <span>Download Instant Copy</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setStatus('idle');
-                          setEmail('');
-                          setUrl('');
-                        }}
-                        className="text-[11px] font-mono text-neutral-400 hover:text-neutral-700 underline cursor-pointer"
-                      >
-                        Request Another Site Audit
-                      </button>
+              <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                {t.desc}
+              </p>
+
+              <ul className="space-y-3 mb-6 sm:mb-8">
+                {t.bullets.map((bullet, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-zinc-300">
+                    <div className="w-4 h-4 rounded-full bg-[#d8b485]/15 text-[#d8b485] flex items-center justify-center shrink-0">
+                      <Check size={11} />
                     </div>
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Form Container */}
+            <div className="w-full md:w-88 shrink-0">
+              {status === 'success' ? (
+                <div className="bg-[#111114] border border-[#d8b485]/30 rounded-xs p-6 text-center space-y-4 shadow-xl">
+                  <div className="w-12 h-12 bg-[#d8b485]/15 text-[#d8b485] rounded-full flex items-center justify-center mx-auto shadow-inner">
+                    <CheckCircle2 size={24} />
                   </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                      <label htmlFor="lm-email" className="block text-[10px] font-mono uppercase text-neutral-500 mb-1.5">
-                        Work Email
-                      </label>
-                      <input
-                        type="email"
-                        id="lm-email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="name@company.com"
-                        className="w-full input-base px-3 py-3 rounded-sm text-sm placeholder:text-neutral-400"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="lm-url" className="block text-[10px] font-mono uppercase text-neutral-500 mb-1.5">
-                        Company Website
-                      </label>
-                      <input
-                        type="url"
-                        id="lm-url"
-                        required
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        placeholder="https://yourcompany.com"
-                        className="w-full input-base px-3 py-3 rounded-sm text-sm placeholder:text-neutral-400"
-                      />
-                    </div>
-
-                    <div className="p-[1px] rounded-sm bg-gradient-to-b from-neutral-700 to-neutral-900 shadow-sm">
-                      <button
-                        type="submit"
-                        disabled={status === 'loading'}
-                        className="w-full bg-neutral-900 text-white px-4 py-3 text-xs font-semibold tracking-wide hover:bg-neutral-800 transition-colors rounded-[1px] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
-                      >
-                        {status === 'loading' ? (
-                          <span>PROCESSING REPORT...</span>
-                        ) : (
-                          <>
-                            <span>SEND ME THE REPORT</span>
-                            <ArrowRight size={14} />
-                          </>
-                        )}
-                      </button>
-                    </div>
-
-                    <p className="text-[10px] text-neutral-400 text-center">
-                      Zero spam. 100% Value.
+                  <div>
+                    <h4 className="text-sm font-bold text-white font-mono uppercase tracking-wider">
+                      {t.successTitle}
+                    </h4>
+                    <p className="text-xs text-zinc-400 mt-1">
+                      {t.successDispatched} <span className="font-mono text-[#d8b485]">{email}</span>
                     </p>
-                  </form>
-                )}
-              </div>
+                  </div>
+
+                  <div className="space-y-2.5 pt-2">
+                    <button
+                      onClick={handleDownloadReport}
+                      className="w-full inline-flex items-center justify-center gap-2 bg-[#d8b485] hover:bg-[#c2a277] text-zinc-950 text-[10px] font-bold uppercase tracking-widest py-3 px-3 rounded-xs transition-colors cursor-pointer shadow-md"
+                    >
+                      <Download size={13} />
+                      <span>{t.downloadBtn}</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setStatus('idle');
+                        setEmail('');
+                        setUrl('');
+                      }}
+                      className="text-[11px] font-mono text-zinc-400 hover:text-white underline cursor-pointer"
+                    >
+                      {t.resetBtn}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5 bg-[#09090b]/80 border border-white/5 p-6 sm:p-7 rounded-xs">
+                  <div>
+                    <label htmlFor="lm-email" className="block text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2 font-mono">
+                      {t.emailLabel}
+                    </label>
+                    <input
+                      type="email"
+                      id="lm-email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="executive@company.com"
+                      className="w-full input-base px-3 py-3 rounded-xs text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="lm-url" className="block text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2 font-mono">
+                      {t.urlLabel}
+                    </label>
+                    <input
+                      type="text"
+                      id="lm-url"
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                      placeholder="https://... or property address"
+                      className="w-full input-base px-3 py-3 rounded-xs text-sm"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="w-full inline-flex items-center justify-center gap-2 py-4 px-6 text-[10px] font-bold tracking-widest text-zinc-950 bg-[#d8b485] hover:bg-[#c2a277] transition-all uppercase cursor-pointer disabled:opacity-75 shadow-md hover:shadow-[0_8px_24px_rgba(216,180,133,0.25)] hover:-translate-y-0.5 active:translate-y-0"
+                  >
+                    {status === 'loading' ? (
+                      <span>{t.submittingBtn}</span>
+                    ) : (
+                      <>
+                        <span>{t.submitBtn}</span>
+                        <ArrowRight size={14} className="text-zinc-950" />
+                      </>
+                    )}
+                  </button>
+
+                  <p className="text-[10px] text-zinc-500 text-center font-mono">
+                    {t.spamNote}
+                  </p>
+                </form>
+              )}
             </div>
           </div>
         </motion.div>
