@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { LivePerformanceTicker } from './components/LivePerformanceTicker';
 import { AboutSection } from './components/AboutSection';
 import { VisionMissionSection } from './components/VisionMissionSection';
 import { SolutionsTechSection } from './components/SolutionsTechSection';
+import { SuccessStoriesSection } from './components/SuccessStoriesSection';
 import { InvestorSection } from './components/InvestorSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -20,6 +23,14 @@ export default function App() {
       if (saved === 'en' || saved === 'ar') return saved;
     }
     return 'en';
+  });
+
+  // Smooth scroll depth progress tracking
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
   });
 
   // Modal states
@@ -55,6 +66,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#09090b] relative text-zinc-300 antialiased selection:bg-[#d8b485]/30 selection:text-white overflow-x-hidden font-sans flex flex-col">
+      {/* Subtle Slim Scroll Depth Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#d8b485] via-[#f3e3ce] to-[#d8b485] z-[60] pointer-events-none shadow-[0_0_8px_rgba(216,180,133,0.5)]"
+        style={{
+          scaleX,
+          transformOrigin: lang === 'ar' ? '100% 50%' : '0% 50%',
+        }}
+        aria-hidden="true"
+      />
+
       {/* Background Ambience & Atmospheric Grid */}
       <div className="fixed inset-0 z-0 bg-grid-pattern opacity-30 pointer-events-none" aria-hidden="true" />
       <div className="fixed top-[-15%] right-[-10%] w-[55%] h-[55%] bg-[#d8b485]/5 blur-[150px] rounded-full pointer-events-none z-0" />
@@ -77,6 +98,9 @@ export default function App() {
           lang={lang}
         />
 
+        {/* Live Performance Ticker — Real-Time Infrastructure Telemetry */}
+        <LivePerformanceTicker lang={lang} />
+
         {/* 3. About Unionsvc Group */}
         <AboutSection
           onExploreTech={() => scrollToSection('solutions')}
@@ -88,6 +112,12 @@ export default function App() {
 
         {/* 5. Key Solutions & Tech Stack */}
         <SolutionsTechSection
+          onRequestDemo={() => setDemoModalOpen(true)}
+          lang={lang}
+        />
+
+        {/* Logistics Success Stories — Enterprise Case Studies Carousel */}
+        <SuccessStoriesSection
           onRequestDemo={() => setDemoModalOpen(true)}
           lang={lang}
         />

@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import {
   ArrowRight,
-  Shield,
-  Lock,
-  Cpu,
-  Layers,
-  Activity,
-  CheckCircle2,
   FileText,
-  Network,
+  ArrowUpRight,
+  Shield,
+  Activity,
   Radio,
-  Server,
-  Zap,
+  MapPin,
+  Clock,
+  Gauge,
+  Cpu,
+  Lock,
+  Layers,
+  Sparkles,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { HeroNetworkCanvas } from './HeroNetworkCanvas';
 import { Language, translations } from '../translations';
 
 interface HeroProps {
@@ -29,238 +31,393 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   const t = translations[lang].hero;
 
-  // Real-time simulated telemetry ticks for high-tech fidelity
-  const [telemetryTick, setTelemetryTick] = useState(0);
-  const [livePackets, setLivePackets] = useState<
-    { id: string; origin: string; dest: string; cipher: string; latency: string; status: string }[]
-  >([
-    { id: 'PKT-9041', origin: 'Tokyo Hub', dest: 'Berlin Gateway', cipher: 'AES-256-GCM', latency: '9ms', status: 'VERIFIED' },
-    { id: 'PKT-9042', origin: 'Rotterdam Port', dest: 'Chicago Cargo Hub', cipher: 'TLS 1.3 / mTLS', latency: '14ms', status: 'IN-TRANSIT' },
-    { id: 'PKT-9043', origin: 'London Central', dest: 'Singapore Gateway', cipher: 'AES-256-GCM', latency: '11ms', status: 'VERIFIED' },
-  ]);
+  // Interactive Live Corridor Manifest selector for the hero visual
+  const [activeCorridor, setActiveCorridor] = useState<number>(0);
 
+  // Live real-time streaming state
+  const [packetCounter, setPacketCounter] = useState(9482104);
+  const [etaSeconds, setEtaSeconds] = useState(9845); // ~02h 44m 05s
+  const [progressPct, setProgressPct] = useState(78.4);
+  const [liveLatency, setLiveLatency] = useState(8.4);
+  const [liveSpeed, setLiveSpeed] = useState(864);
+  const [telemetryPulse, setTelemetryPulse] = useState(false);
+  const [liveVolume, setLiveVolume] = useState(4218940250); // Live $ value ticking
+
+  const corridors = [
+    {
+      origin: 'Tokyo Hub (HND)',
+      destination: 'Berlin Cargo Gateway (BER)',
+      distance: '9,140 km',
+      cipher: 'AES-256-GCM',
+      status: 'In-Transit · Verified',
+      baseLatency: 8.4,
+      carrierNode: 'Carrier Node 041-JP',
+      cargo: 'High-Precision Automotive Castings',
+      gps: '35.681°N, 139.767°E',
+      temp: '+4.2°C',
+    },
+    {
+      origin: 'Rotterdam Port (RTM)',
+      destination: 'Chicago Logistics Park (ORD)',
+      distance: '6,680 km',
+      cipher: 'TLS 1.3 / mTLS',
+      status: 'Dispatched · Autonomous',
+      baseLatency: 11.2,
+      carrierNode: 'Carrier Node 118-EU',
+      cargo: 'Pharma Cold-Chain Vaccines',
+      gps: '51.924°N, 4.477°E',
+      temp: '+3.8°C',
+    },
+    {
+      origin: 'London Gateway (LHR)',
+      destination: 'Singapore Changi (SIN)',
+      distance: '10,870 km',
+      cipher: 'AES-256-GCM',
+      status: 'Synchronized · Zero Trust',
+      baseLatency: 9.6,
+      carrierNode: 'Carrier Node 209-UK',
+      cargo: 'Aerospace Titanium Assemblies',
+      gps: '51.507°N, -0.127°E',
+      temp: '+18.5°C',
+    },
+  ];
+
+  const current = corridors[activeCorridor];
+
+  // Real-time ticking loops: ETA countdown, packet increment, latency jitter, speed fluctuations
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTelemetryTick((prev) => prev + 1);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    const timer = setInterval(() => {
+      // Countdown ETA
+      setEtaSeconds((prev) => (prev > 1 ? prev - 1 : 9800));
+
+      // Micro progression
+      setProgressPct((prev) => +(prev < 99.8 ? prev + 0.01 : 78.4).toFixed(2));
+
+      // Increment live transaction volume
+      setLiveVolume((prev) => prev + Math.floor(Math.random() * 45) + 10);
+    }, 1000);
+
+    const telemetryInterval = setInterval(() => {
+      // Fluctuate packet ID and pulse
+      setPacketCounter((prev) => prev + 1);
+      setTelemetryPulse(true);
+      setTimeout(() => setTelemetryPulse(false), 400);
+
+      // Jitter latency slightly (+/- 0.3ms)
+      setLiveLatency(+(current.baseLatency + (Math.random() * 0.6 - 0.3)).toFixed(1));
+
+      // Jitter ground/air speed
+      setLiveSpeed(860 + Math.floor(Math.random() * 8));
+    }, 2400);
+
+    return () => {
+      clearInterval(timer);
+      clearInterval(telemetryInterval);
+    };
+  }, [current.baseLatency]);
+
+  // Format ETA seconds into HH:MM:SS
+  const formatEta = (sec: number) => {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    return `${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m ${s.toString().padStart(2, '0')}s`;
+  };
 
   return (
-    <section id="home" className="relative pt-32 sm:pt-36 pb-20 sm:pb-28 overflow-hidden">
-      {/* Dynamic Background Network Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#d8b485]/10 rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="absolute top-20 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] pointer-events-none -z-10" />
+    <section id="home" className="relative pt-32 sm:pt-36 pb-16 sm:pb-20 overflow-hidden border-b border-white/[0.08]">
+      {/* Interactive Network Particle Canvas */}
+      <HeroNetworkCanvas />
 
-      {/* Decorative Network Grid lines */}
-      <div className="max-w-[1400px] mx-auto px-6">
-        {/* Top Intelligence Badge */}
+      {/* Background Architectural Ambient Glow */}
+      <div className="absolute top-1/3 left-1/4 w-[500px] h-[300px] bg-[#d8b485]/5 rounded-full blur-[140px] pointer-events-none -z-10" />
+
+      <div className="max-w-[1400px] mx-auto px-6 relative z-10">
+        {/* Real-time Streaming Ticker Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8"
+          initial={{ opacity: 0, y: -6, filter: 'blur(3px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-6 flex flex-wrap items-center gap-3"
         >
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d8b485] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#d8b485]" />
-          </span>
-          <span className="text-[10px] sm:text-[11px] font-mono tracking-widest uppercase text-zinc-300">
-            {t.badge}
-          </span>
+          <div className="flex items-center gap-2 px-2.5 py-1 rounded bg-[#d8b485]/10 border border-[#d8b485]/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#d8b485] animate-ping" />
+            <span className="text-[11px] font-bold text-white tracking-wider">LIVE TELEMETRY ACTIVE</span>
+          </div>
+          <span className="text-zinc-600">·</span>
+          <span>{t.kicker}</span>
+          <span className="text-zinc-600">·</span>
+          <span className="text-zinc-400 tabular-nums">STREAM: 24/7/365</span>
         </motion.div>
 
-        {/* Headline & Subtitle Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
-          {/* Left Column: Headline, Sub-Headline, CTAs */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left">
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-6"
-            >
-              <span className="text-white">Redefining Smart Logistics </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d8b485] via-[#edd8bb] to-[#d8b485]">
-                Through Encrypted Communications
-              </span>{' '}
-              <span className="text-white">and Advanced Tech Integration.</span>
-            </motion.h1>
+        {/* 2-Column Split: Editorial Value Proposition & Bespoke Freight Manifest */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-stretch mb-16">
+          {/* Left Column (7 Cols): Headline, Subheadline, Primary CTAs */}
+          <div className="lg:col-span-7 flex flex-col justify-between items-start text-left">
+            <div>
+              {/* Subtle Staggered Word Entrance for Hero Headline */}
+              <motion.h1
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.035,
+                      delayChildren: 0.08,
+                    },
+                  },
+                }}
+                style={{ textWrap: 'balance' }}
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-bold tracking-tight text-white leading-[1.14] mb-6 font-sans flex flex-wrap gap-x-2.5 gap-y-1"
+              >
+                {t.headline.split(' ').map((word, i) => (
+                  <motion.span
+                    key={`hero-word-${word}-${i}`}
+                    variants={{
+                      hidden: {
+                        opacity: 0,
+                        y: 12,
+                        filter: 'blur(4px)',
+                      },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        filter: 'blur(0px)',
+                        transition: {
+                          duration: 0.6,
+                          ease: [0.16, 1, 0.3, 1],
+                        },
+                      },
+                    }}
+                    className="inline-block"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.h1>
 
-            {/* Sub-Headline */}
-            <motion.p
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed mb-8 max-w-2xl"
-            >
-              <strong className="text-white font-semibold">Unionsvc Group</strong> delivers the next generation of digital freight forwarding and logistics brokerage for enterprises and large corporations—powered by artificial intelligence, end-to-end encryption, and ultra-high reliability to secure and manage complete supply chains.
-            </motion.p>
+              {/* Subtle upward drift and clarity entrance for Subheadline */}
+              <motion.p
+                initial={{ opacity: 0, y: 12, filter: 'blur(3px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.65, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed mb-8 max-w-2xl"
+              >
+                {t.subHeadline}
+              </motion.p>
+            </div>
 
-            {/* CTA Buttons: Explore Solutions | Investor Pitch Deck */}
+            {/* Tactile Action Button Group */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mb-12"
+              transition={{ duration: 0.5, delay: 0.52, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto pt-2"
             >
               <button
                 onClick={onExploreSolutions}
-                className="cursor-pointer inline-flex items-center justify-center gap-2.5 px-7 py-3.5 text-xs font-bold tracking-widest text-zinc-950 bg-[#d8b485] hover:bg-[#c4a071] transition-all uppercase rounded shadow-[0_4px_24px_rgba(216,180,133,0.3)] hover:shadow-[0_8px_30px_rgba(216,180,133,0.45)] hover:-translate-y-0.5 active:translate-y-0"
+                className="cursor-pointer inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-xs font-semibold tracking-wide text-zinc-950 bg-[#d8b485] hover:bg-[#c9a373] transition-colors rounded shadow-sm"
               >
                 <span>{t.ctaExplore}</span>
-                <ArrowRight size={15} />
+                <ArrowRight size={14} />
               </button>
 
               <button
                 onClick={onRequestPitchDeck}
-                className="cursor-pointer inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-xs font-semibold tracking-wider text-zinc-200 bg-white/5 hover:bg-white/10 border border-white/15 hover:border-[#d8b485]/50 transition-all uppercase rounded backdrop-blur-sm hover:-translate-y-0.5 active:translate-y-0 font-mono"
+                className="cursor-pointer inline-flex items-center justify-center gap-2 px-5 py-3.5 text-xs font-medium text-zinc-200 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all rounded"
               >
-                <FileText size={15} className="text-[#d8b485]" />
+                <FileText size={14} className="text-[#d8b485]" />
                 <span>{t.ctaInvestor}</span>
               </button>
             </motion.div>
-
-            {/* Quick Micro-Badges */}
-            <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-400 font-mono border-t border-white/10 pt-6 w-full">
-              <div className="flex items-center gap-2">
-                <Shield size={14} className="text-emerald-400" />
-                <span>AES-256 / TLS 1.3 End-to-End</span>
-              </div>
-              <span className="text-zinc-600 hidden sm:inline">•</span>
-              <div className="flex items-center gap-2">
-                <Cpu size={14} className="text-[#d8b485]" />
-                <span>Autonomous Predictive AI Matching</span>
-              </div>
-              <span className="text-zinc-600 hidden sm:inline">•</span>
-              <div className="flex items-center gap-2">
-                <Server size={14} className="text-cyan-400" />
-                <span>Zero-Downtime 99.999% SLA</span>
-              </div>
-            </div>
           </div>
 
-          {/* Right Column: High-Tech Telemetry HUD & Interactive Architecture Stream */}
+          {/* Right Column (5 Cols): Bespoke Tactical Route Manifest + Full-Bleed Photograph with Live Scanline */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="lg:col-span-5"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:col-span-5 relative flex flex-col justify-between rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-[#0c0c11]"
           >
-            <div className="bg-[#0e0e13]/90 border border-white/10 rounded-lg p-5 sm:p-6 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-              {/* Circuit lines gradient header */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#d8b485] to-transparent opacity-75" />
-
-              <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="p-1.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-                    <Activity size={15} className="animate-pulse" />
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-mono font-bold tracking-wider text-white uppercase">
-                      {t.telemetryTitle}
-                    </h3>
-                    <p className="text-[10px] font-mono text-zinc-500">Live Encrypted Stream</p>
-                  </div>
-                </div>
-                <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  ONLINE
+            {/* Top Interactive Corridor Selector Tabs with Real-Time Pulse */}
+            <div className="p-3 bg-black/60 border-b border-white/10 backdrop-blur-md flex items-center justify-between gap-1 z-10">
+              <div className="flex items-center gap-2 px-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[11px] font-mono text-zinc-300 uppercase tracking-wider">
+                  Active Corridors:
                 </span>
               </div>
-
-              {/* Status metrics grid */}
-              <div className="grid grid-cols-2 gap-3 mb-4 font-mono">
-                <div className="p-3 rounded bg-white/[0.02] border border-white/5">
-                  <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-1 flex items-center justify-between">
-                    <span>Active Telemetry Nodes</span>
-                    <Radio size={11} className="text-[#d8b485]" />
-                  </div>
-                  <div className="text-lg font-bold text-white">4,820</div>
-                  <div className="text-[10px] text-emerald-400 flex items-center gap-1 mt-0.5">
-                    <CheckCircle2 size={10} /> 100% Zero Trust Verified
-                  </div>
-                </div>
-
-                <div className="p-3 rounded bg-white/[0.02] border border-white/5">
-                  <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-1 flex items-center justify-between">
-                    <span>Cryptographic SLA</span>
-                    <Lock size={11} className="text-cyan-400" />
-                  </div>
-                  <div className="text-lg font-bold text-white">99.999%</div>
-                  <div className="text-[10px] text-zinc-400 mt-0.5">
-                    Zero-Downtime Pipeline
-                  </div>
-                </div>
-              </div>
-
-              {/* Simulated Live Encrypted Stream Feed */}
-              <div className="space-y-2 mb-4 font-mono text-xs">
-                <div className="flex items-center justify-between text-[10px] text-zinc-500 uppercase pb-1 border-b border-white/5">
-                  <span>Packet Routing</span>
-                  <span>Encryption Standard</span>
-                  <span>Latency</span>
-                </div>
-                {livePackets.map((pkt, idx) => (
-                  <div
-                    key={`${pkt.id}-${idx}-${telemetryTick}`}
-                    className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between transition-colors hover:border-[#d8b485]/40"
+              <div className="flex items-center gap-1">
+                {corridors.map((c, idx) => (
+                  <button
+                    key={`corridor-tab-${idx}`}
+                    onClick={() => setActiveCorridor(idx)}
+                    className={`px-2.5 py-1 text-[11px] font-mono rounded transition-colors cursor-pointer ${
+                      activeCorridor === idx
+                        ? 'bg-white/15 text-white font-medium border border-white/10 shadow-sm'
+                        : 'text-zinc-400 hover:text-white'
+                    }`}
                   >
-                    <div>
-                      <div className="text-[11px] font-semibold text-zinc-200">
-                        {pkt.origin} &rarr; {pkt.dest}
-                      </div>
-                      <div className="text-[9px] text-zinc-500">{pkt.id} • Verified Handshake</div>
-                    </div>
-                    <div className="text-center">
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#d8b485]/10 text-[#d8b485] border border-[#d8b485]/20 font-mono">
-                        {pkt.cipher}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-[10px] text-emerald-400 font-mono">{pkt.latency}</span>
-                    </div>
-                  </div>
+                    0{idx + 1}
+                  </button>
                 ))}
               </div>
+            </div>
 
-              {/* ERP Unified Integration Bar */}
-              <div className="p-3 rounded bg-gradient-to-r from-white/[0.02] to-white/[0.05] border border-white/10 flex items-center justify-between text-xs">
+            {/* High-Resolution Visual Background with Real-time Radar Scanline */}
+            <div className="relative flex-1 min-h-[220px] overflow-hidden group">
+              <img
+                src="/src/assets/images/hero_smart_logistics_1792232602542.jpg"
+                alt="Automated smart logistics terminal at twilight"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c11] via-black/25 to-transparent" />
+
+              {/* Real-time Vertical Scanline Laser Beam */}
+              <div
+                className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#d8b485] to-transparent pointer-events-none opacity-70 animate-scanline"
+                style={{
+                  boxShadow: '0 0 10px rgba(216, 180, 133, 0.8)',
+                }}
+              />
+
+              {/* Floating Real-Time Packet Badge */}
+              <div className="absolute top-3 left-3 z-10 font-mono text-[10px] px-2.5 py-1 rounded bg-black/70 backdrop-blur-md border border-white/15 flex items-center gap-2">
+                <Radio size={11} className={telemetryPulse ? 'text-emerald-400 scale-125' : 'text-[#d8b485]'} />
+                <span className="text-zinc-300">PKT:</span>
+                <span className="text-white font-bold tabular-nums">#{packetCounter}</span>
+                <span className="text-emerald-400 text-[9px] uppercase font-bold">VERIFIED</span>
+              </div>
+
+              {/* Floating Real-Time GPS Tag */}
+              <div className="absolute top-3 right-3 z-10 font-mono text-[10px] px-2.5 py-1 rounded bg-black/70 backdrop-blur-md border border-white/15 text-zinc-300 tabular-nums">
+                {current.gps}
+              </div>
+
+              {/* In-Transit Progress Bar with Glowing Edge */}
+              <div className="absolute bottom-3 inset-x-3 z-10 p-2.5 rounded bg-black/75 backdrop-blur-md border border-white/10 font-mono">
+                <div className="flex items-center justify-between text-[11px] mb-1.5">
+                  <span className="text-zinc-400 flex items-center gap-1.5">
+                    <Clock size={11} className="text-[#d8b485]" />
+                    <span>ETA:</span>
+                    <span className="text-white font-bold tabular-nums">{formatEta(etaSeconds)}</span>
+                  </span>
+                  <span className="text-[#d8b485] font-bold tabular-nums">{progressPct}% Traversed</span>
+                </div>
+                <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden relative">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#d8b485]/60 via-[#d8b485] to-white rounded-full transition-all duration-300 relative"
+                    style={{ width: `${progressPct}%` }}
+                  >
+                    <div className="absolute right-0 top-0 bottom-0 w-2 bg-white shadow-[0_0_8px_#ffffff] rounded-full" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Tactical Live Flight / Freight Manifest Box */}
+            <div className="p-5 sm:p-6 bg-[#0c0c11] border-t border-white/10 font-mono text-xs z-10">
+              <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/5">
                 <div className="flex items-center gap-2">
-                  <Network size={14} className="text-[#d8b485]" />
-                  <span className="text-zinc-300 font-mono text-[11px]">
-                    Unified API Sync: <strong className="text-white">SAP / Oracle / MS Dynamics</strong>
+                  <Activity size={13} className="text-[#d8b485] animate-pulse" />
+                  <span className="text-white font-semibold tracking-wide">
+                    {current.origin} &rarr; {current.destination}
                   </span>
                 </div>
-                <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">
-                  SYNCHRONIZED
+                <span className="text-[#d8b485] text-[11px] font-medium tabular-nums">{current.distance}</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 text-xs mb-3">
+                <div className="p-2 rounded bg-black/40 border border-white/5">
+                  <div className="text-[9px] text-zinc-500 uppercase">Speed Velocity</div>
+                  <div className="text-white font-medium tabular-nums">{liveSpeed} km/h</div>
+                </div>
+                <div className="p-2 rounded bg-black/40 border border-white/5">
+                  <div className="text-[9px] text-zinc-500 uppercase">Live Latency</div>
+                  <div className="text-emerald-400 font-medium tabular-nums">{liveLatency}ms</div>
+                </div>
+                <div className="p-2 rounded bg-black/40 border border-white/5">
+                  <div className="text-[9px] text-zinc-500 uppercase">Cargo Thermal</div>
+                  <div className="text-white font-medium tabular-nums">{current.temp}</div>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] text-zinc-400">
+                <div className="flex items-center gap-1.5">
+                  <Shield size={11} className="text-emerald-400" />
+                  <span>{current.carrierNode}</span>
+                </div>
+                <span className="text-emerald-400 font-medium flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span>{current.status}</span>
                 </span>
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* 4 Bottom Metric Callouts */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-16 pt-8 border-t border-white/10"
-        >
-          {t.metrics.map((metric, idx) => (
-            <div
-              key={`metric-${idx}`}
-              className="p-4 sm:p-5 rounded bg-[#0d0d12]/60 border border-white/5 hover:border-[#d8b485]/30 transition-colors"
-            >
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-[#d8b485] mb-1">
-                {metric.value}
+        {/* Continuous Horizontal Telemetry Ledger (Real-Time Live Numbers) */}
+        <div className="pt-8 border-t border-white/[0.08]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 divide-y lg:divide-y-0 lg:divide-x divide-white/[0.06]">
+            {/* Metric 1: Live Audited Volume */}
+            <div className="pt-4 lg:pt-0">
+              <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-white mb-1 tracking-tight flex items-baseline gap-1">
+                <span>${(liveVolume / 1000000000).toFixed(2)}B</span>
+                <span className="text-xs text-emerald-400 font-mono font-normal">▲ LIVE</span>
               </div>
-              <div className="text-xs sm:text-sm text-zinc-400 font-light">
-                {metric.label}
+              <div className="text-xs font-semibold text-zinc-200 mb-0.5">
+                Freight Volume Secured
+              </div>
+              <div className="text-[11px] text-zinc-500 font-mono">
+                Continuous real-time settlement
               </div>
             </div>
-          ))}
-        </motion.div>
+
+            {/* Metric 2: Live Latency */}
+            <div className="pl-4 lg:pl-6 pt-4 lg:pt-0">
+              <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-emerald-400 mb-1 tracking-tight flex items-baseline gap-1">
+                <span>{liveLatency}ms</span>
+                <span className="text-xs text-zinc-400 font-mono font-normal">avg</span>
+              </div>
+              <div className="text-xs font-semibold text-zinc-200 mb-0.5">
+                Telemetry Stream Latency
+              </div>
+              <div className="text-[11px] text-zinc-500 font-mono">
+                Sub-second event pipeline
+              </div>
+            </div>
+
+            {/* Metric 3: Zero-Downtime SLA */}
+            <div className="lg:pl-6 pt-4 lg:pt-0">
+              <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-white mb-1 tracking-tight">
+                99.999%
+              </div>
+              <div className="text-xs font-semibold text-zinc-200 mb-0.5">
+                Zero-Downtime SLA
+              </div>
+              <div className="text-[11px] text-zinc-500 font-mono">
+                Multi-region active-active cluster
+              </div>
+            </div>
+
+            {/* Metric 4: Endpoint Verification */}
+            <div className="pl-4 lg:pl-6 pt-4 lg:pt-0">
+              <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-[#d8b485] mb-1 tracking-tight flex items-center gap-1.5">
+                <Shield size={20} className="text-[#d8b485]" />
+                <span>Zero Trust</span>
+              </div>
+              <div className="text-xs font-semibold text-zinc-200 mb-0.5">
+                Endpoint Verification
+              </div>
+              <div className="text-[11px] text-zinc-500 font-mono">
+                Mutual TLS 1.3 & HSM attestation
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
