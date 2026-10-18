@@ -132,26 +132,26 @@ export const Hero: React.FC<HeroProps> = ({
       {/* Background Architectural Ambient Glow */}
       <div className="absolute top-1/3 left-1/4 w-[500px] h-[300px] bg-[#d8b485]/5 rounded-full blur-[140px] pointer-events-none -z-10" />
 
-      <div className="max-w-[1400px] mx-auto px-6 relative z-10">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
         {/* Real-time Streaming Ticker Badge */}
         <motion.div
           initial={{ opacity: 0, y: -6, filter: 'blur(3px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-6 flex flex-wrap items-center gap-3"
+          className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-6 flex flex-wrap items-center gap-2 sm:gap-3"
         >
           <div className="flex items-center gap-2 px-2.5 py-1 rounded bg-[#d8b485]/10 border border-[#d8b485]/20">
             <span className="w-1.5 h-1.5 rounded-full bg-[#d8b485] animate-ping" />
-            <span className="text-[11px] font-bold text-white tracking-wider">LIVE TELEMETRY ACTIVE</span>
+            <span className="text-[10px] sm:text-[11px] font-bold text-white tracking-wider">LIVE TELEMETRY ACTIVE</span>
           </div>
-          <span className="text-zinc-600">·</span>
-          <span>{t.kicker}</span>
-          <span className="text-zinc-600">·</span>
-          <span className="text-zinc-400 tabular-nums">STREAM: 24/7/365</span>
+          <span className="text-zinc-600 hidden xs:inline">·</span>
+          <span className="text-[11px] sm:text-xs">{t.kicker}</span>
+          <span className="text-zinc-600 hidden sm:inline">·</span>
+          <span className="text-zinc-400 tabular-nums text-[11px] sm:text-xs">STREAM: 24/7/365</span>
         </motion.div>
 
         {/* 2-Column Split: Editorial Value Proposition & Bespoke Freight Manifest */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-stretch mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch mb-12 sm:mb-16">
           {/* Left Column (7 Cols): Headline, Subheadline, Primary CTAs */}
           <div className="lg:col-span-7 flex flex-col justify-between items-start text-left">
             <div>
@@ -170,7 +170,7 @@ export const Hero: React.FC<HeroProps> = ({
                   },
                 }}
                 style={{ textWrap: 'balance' }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-bold tracking-tight text-white leading-[1.14] mb-6 font-sans flex flex-wrap gap-x-2.5 gap-y-1"
+                className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-bold tracking-tight text-white leading-[1.18] sm:leading-[1.14] mb-5 sm:mb-6 font-sans flex flex-wrap gap-x-2 gap-y-1 break-words"
               >
                 {t.headline.split(' ').map((word, i) => (
                   <motion.span
@@ -203,32 +203,32 @@ export const Hero: React.FC<HeroProps> = ({
                 initial={{ opacity: 0, y: 12, filter: 'blur(3px)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 transition={{ duration: 0.65, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed mb-8 max-w-2xl"
+                className="text-sm sm:text-base md:text-lg text-zinc-300 font-light leading-relaxed mb-6 sm:mb-8 max-w-2xl"
               >
                 {t.subHeadline}
               </motion.p>
             </div>
 
-            {/* Tactile Action Button Group */}
+            {/* Tactile Action Button Group with Mobile Touch Accessibility (min 48px) */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.52, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto pt-2"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto pt-2"
             >
               <button
                 onClick={onExploreSolutions}
-                className="cursor-pointer inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-xs font-semibold tracking-wide text-zinc-950 bg-[#d8b485] hover:bg-[#c9a373] transition-colors rounded shadow-sm"
+                className="cursor-pointer inline-flex items-center justify-center gap-2.5 px-6 py-3.5 min-h-[48px] text-xs font-semibold tracking-wide text-zinc-950 bg-[#d8b485] hover:bg-[#c9a373] active:scale-98 transition-all rounded-lg shadow-sm w-full sm:w-auto"
               >
                 <span>{t.ctaExplore}</span>
-                <ArrowRight size={14} />
+                <ArrowRight size={15} />
               </button>
 
               <button
                 onClick={onRequestPitchDeck}
-                className="cursor-pointer inline-flex items-center justify-center gap-2 px-5 py-3.5 text-xs font-medium text-zinc-200 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all rounded"
+                className="cursor-pointer inline-flex items-center justify-center gap-2 px-5 py-3.5 min-h-[48px] text-xs font-medium text-zinc-200 bg-white/5 hover:bg-white/10 active:scale-98 border border-white/10 hover:border-white/20 transition-all rounded-lg w-full sm:w-auto"
               >
-                <FileText size={14} className="text-[#d8b485]" />
+                <FileText size={15} className="text-[#d8b485]" />
                 <span>{t.ctaInvestor}</span>
               </button>
             </motion.div>
@@ -242,22 +242,22 @@ export const Hero: React.FC<HeroProps> = ({
             className="lg:col-span-5 relative flex flex-col justify-between rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-[#0c0c11]"
           >
             {/* Top Interactive Corridor Selector Tabs with Real-Time Pulse */}
-            <div className="p-3 bg-black/60 border-b border-white/10 backdrop-blur-md flex items-center justify-between gap-1 z-10">
-              <div className="flex items-center gap-2 px-2">
+            <div className="p-3 bg-black/60 border-b border-white/10 backdrop-blur-md flex items-center justify-between gap-1 z-10 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center gap-2 px-1 sm:px-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-[11px] font-mono text-zinc-300 uppercase tracking-wider">
                   Active Corridors:
                 </span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1.5">
                 {corridors.map((c, idx) => (
                   <button
                     key={`corridor-tab-${idx}`}
                     onClick={() => setActiveCorridor(idx)}
-                    className={`px-2.5 py-1 text-[11px] font-mono rounded transition-colors cursor-pointer ${
+                    className={`min-h-[44px] min-w-[44px] px-3 py-2 text-[11px] font-mono rounded-lg transition-colors cursor-pointer flex items-center justify-center ${
                       activeCorridor === idx
                         ? 'bg-white/15 text-white font-medium border border-white/10 shadow-sm'
-                        : 'text-zinc-400 hover:text-white'
+                        : 'text-zinc-400 hover:text-white bg-white/5'
                     }`}
                   >
                     0{idx + 1}
@@ -330,18 +330,18 @@ export const Hero: React.FC<HeroProps> = ({
                 <span className="text-[#d8b485] text-[11px] font-medium tabular-nums">{current.distance}</span>
               </div>
 
-              <div className="grid grid-cols-3 gap-2 text-xs mb-3">
-                <div className="p-2 rounded bg-black/40 border border-white/5">
-                  <div className="text-[9px] text-zinc-500 uppercase">Speed Velocity</div>
-                  <div className="text-white font-medium tabular-nums">{liveSpeed} km/h</div>
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-[10px] sm:text-xs mb-3">
+                <div className="p-2 rounded bg-black/40 border border-white/5 min-w-0">
+                  <div className="text-[9px] text-zinc-500 uppercase truncate">Velocity</div>
+                  <div className="text-white font-medium tabular-nums truncate">{liveSpeed} km/h</div>
                 </div>
-                <div className="p-2 rounded bg-black/40 border border-white/5">
-                  <div className="text-[9px] text-zinc-500 uppercase">Live Latency</div>
-                  <div className="text-emerald-400 font-medium tabular-nums">{liveLatency}ms</div>
+                <div className="p-2 rounded bg-black/40 border border-white/5 min-w-0">
+                  <div className="text-[9px] text-zinc-500 uppercase truncate">Latency</div>
+                  <div className="text-emerald-400 font-medium tabular-nums truncate">{liveLatency}ms</div>
                 </div>
-                <div className="p-2 rounded bg-black/40 border border-white/5">
-                  <div className="text-[9px] text-zinc-500 uppercase">Cargo Thermal</div>
-                  <div className="text-white font-medium tabular-nums">{current.temp}</div>
+                <div className="p-2 rounded bg-black/40 border border-white/5 min-w-0">
+                  <div className="text-[9px] text-zinc-500 uppercase truncate">Thermal</div>
+                  <div className="text-white font-medium tabular-nums truncate">{current.temp}</div>
                 </div>
               </div>
 
@@ -359,12 +359,12 @@ export const Hero: React.FC<HeroProps> = ({
           </motion.div>
         </div>
 
-        {/* Continuous Horizontal Telemetry Ledger (Real-Time Live Numbers) */}
-        <div className="pt-8 border-t border-white/[0.08]">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 divide-y lg:divide-y-0 lg:divide-x divide-white/[0.06]">
+        {/* Continuous Telemetry Ledger (Responsive Card Grid for Mobile & Desktop) */}
+        <div className="pt-8 sm:pt-10 border-t border-white/[0.08]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {/* Metric 1: Live Audited Volume */}
-            <div className="pt-4 lg:pt-0">
-              <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-white mb-1 tracking-tight flex items-baseline gap-1">
+            <div className="p-4 sm:p-5 rounded-xl bg-black/40 border border-white/5 flex flex-col justify-between">
+              <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-white mb-1 tracking-tight flex items-baseline gap-1.5">
                 <span>${(liveVolume / 1000000000).toFixed(2)}B</span>
                 <span className="text-xs text-emerald-400 font-mono font-normal">▲ LIVE</span>
               </div>
@@ -377,8 +377,8 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Metric 2: Live Latency */}
-            <div className="pl-4 lg:pl-6 pt-4 lg:pt-0">
-              <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-emerald-400 mb-1 tracking-tight flex items-baseline gap-1">
+            <div className="p-4 sm:p-5 rounded-xl bg-black/40 border border-white/5 flex flex-col justify-between">
+              <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-emerald-400 mb-1 tracking-tight flex items-baseline gap-1.5">
                 <span>{liveLatency}ms</span>
                 <span className="text-xs text-zinc-400 font-mono font-normal">avg</span>
               </div>
@@ -391,7 +391,7 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Metric 3: Zero-Downtime SLA */}
-            <div className="lg:pl-6 pt-4 lg:pt-0">
+            <div className="p-4 sm:p-5 rounded-xl bg-black/40 border border-white/5 flex flex-col justify-between">
               <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-white mb-1 tracking-tight">
                 99.999%
               </div>
@@ -404,9 +404,9 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Metric 4: Endpoint Verification */}
-            <div className="pl-4 lg:pl-6 pt-4 lg:pt-0">
+            <div className="p-4 sm:p-5 rounded-xl bg-black/40 border border-white/5 flex flex-col justify-between">
               <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-[#d8b485] mb-1 tracking-tight flex items-center gap-1.5">
-                <Shield size={20} className="text-[#d8b485]" />
+                <Shield size={20} className="text-[#d8b485] shrink-0" />
                 <span>Zero Trust</span>
               </div>
               <div className="text-xs font-semibold text-zinc-200 mb-0.5">

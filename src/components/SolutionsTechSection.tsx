@@ -32,13 +32,13 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
 }) => {
   const t = translations[lang].solutions;
 
-  // Interactive cargo demo for Solution 01
-  const [cargoType, setCargoType] = useState<'automotive' | 'pharma' | 'aerospace'>('automotive');
+  // Interactive cargo demo for Solution 01 - Featuring Sovereign Middle East & African Corridor
+  const [cargoType, setCargoType] = useState<'sovereign' | 'automotive' | 'pharma' | 'aerospace'>('sovereign');
   const [isMatching, setIsMatching] = useState(false);
   const [matchDone, setMatchDone] = useState(true);
 
   // Live real-time dispatch events simulation
-  const [liveOrderTicker, setLiveOrderTicker] = useState('Tokyo Port &rarr; Nagoya: 28.4t Castings matched in 34s (Carrier 094-JP)');
+  const [liveOrderTicker, setLiveOrderTicker] = useState('Riyadh Sovereign Gateway &rarr; Cairo Suez Hub: 32.0t Petrochem matched in 19s (Carrier 710-KSA)');
   const [liveMatchesCount, setLiveMatchesCount] = useState(1482);
   const [erpSyncCounter, setErpSyncCounter] = useState(892014);
   const [liveErpLatency, setLiveErpLatency] = useState(11.4);
@@ -48,6 +48,14 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
   const [selectedErp, setSelectedErp] = useState<'sap' | 'oracle' | 'dynamics'>('sap');
 
   const cargoConfigs = {
+    sovereign: {
+      load: '32.0 Ton Sovereign Petrochemical & Cold-Chain Systems',
+      route: 'Riyadh Hub &rarr; Cairo Gateway &rarr; Accra Terminal',
+      carrier: 'Carrier 710-KSA / 088-GH (Zero Trust Dual-Seal)',
+      rateIndex: 'SAR 184,000 (Algorithmically Settled)',
+      matchTime: '19 Seconds',
+      co2eReduction: '26.4%',
+    },
     automotive: {
       load: '28.4 Ton Specialized Component Castings',
       route: 'Tokyo Port &rarr; Nagoya Assembly Complex',
@@ -85,19 +93,20 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
       setLiveErpLatency(+(11 + (Math.random() * 0.8 - 0.4)).toFixed(1));
 
       const samples = [
+        'Riyadh Sovereign Gateway &rarr; Cairo Suez Hub: 32.0t Petrochem matched in 19s (Carrier 710-KSA, SAR 184,000)',
+        'Cairo Gateway &rarr; Accra AfCFTA Hub: 18.5t Medical Diagnostics locked in 24s (Carrier 088-GH, $4,850)',
+        'Accra Atlantic Terminal &rarr; London: 26.0t Agricultural Commodities matched in 31s (Carrier 209-UK, £3,920)',
         'Tokyo Port &rarr; Nagoya: 28.4t Castings matched in 34s (Carrier 094-JP, ¥482,000)',
-        'Frankfurt Gateway &rarr; Zurich: 14.2t Vaccines locked in 22s (Carrier 112-EU, €3,840)',
-        'London Stansted &rarr; Toulouse: 8.8t Titanium matched in 41s (Carrier 031-UK, £5,200)',
-        'Rotterdam &rarr; Berlin: 22.0t Precision Robotics matched in 18s (Carrier 188-DE, €2,950)',
-        'Singapore &rarr; Tokyo: 12.5t Semiconductor Wafers matched in 28s (Carrier 087-SG, $8,400)',
+        'Riyadh Sovereign &rarr; Dubai DWC: 12.0t Avionics matched in 14s (Carrier 330-ME, AED 42,500)',
+        'Cairo Gateway &rarr; Berlin Gateway: 22.0t Precision Robotics matched in 18s (Carrier 114-DE, €3,200)',
       ];
       setLiveOrderTicker(samples[Math.floor(Math.random() * samples.length)]);
-    }, 3200);
+    }, 2800);
 
     return () => clearInterval(liveMatchInterval);
   }, []);
 
-  const handleSimulateMatch = (type: 'automotive' | 'pharma' | 'aerospace') => {
+  const handleSimulateMatch = (type: 'sovereign' | 'automotive' | 'pharma' | 'aerospace') => {
     setCargoType(type);
     setIsMatching(true);
     setTimeout(() => {
@@ -155,15 +164,15 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
   const curErp = erpPayloads[selectedErp];
 
   return (
-    <section id="solutions" className="py-20 sm:py-28 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
-      <div className="max-w-[1400px] mx-auto px-6">
+    <section id="solutions" className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         {/* Section Header with whileInView reveal */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-14"
+          className="max-w-3xl mb-10 sm:mb-14"
         >
           <div className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-3 flex items-center gap-2">
             <Radio size={13} className="animate-pulse text-[#d8b485]" />
@@ -247,10 +256,21 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
                 </span>
               </div>
 
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <button
+                  onClick={() => handleSimulateMatch('sovereign')}
+                  className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs transition-colors cursor-pointer flex items-center gap-2 ${
+                    cargoType === 'sovereign'
+                      ? 'bg-[#d8b485] text-zinc-950 font-bold'
+                      : 'bg-white/5 text-zinc-300 hover:text-white'
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                  <span>Sovereign (KSA-EGY-GHA)</span>
+                </button>
                 <button
                   onClick={() => handleSimulateMatch('automotive')}
-                  className={`px-3 py-1.5 rounded text-[11px] transition-colors cursor-pointer ${
+                  className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs transition-colors cursor-pointer flex items-center justify-center ${
                     cargoType === 'automotive'
                       ? 'bg-[#d8b485] text-zinc-950 font-bold'
                       : 'bg-white/5 text-zinc-300 hover:text-white'
@@ -260,7 +280,7 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
                 </button>
                 <button
                   onClick={() => handleSimulateMatch('pharma')}
-                  className={`px-3 py-1.5 rounded text-[11px] transition-colors cursor-pointer ${
+                  className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs transition-colors cursor-pointer flex items-center justify-center ${
                     cargoType === 'pharma'
                       ? 'bg-[#d8b485] text-zinc-950 font-bold'
                       : 'bg-white/5 text-zinc-300 hover:text-white'
@@ -270,7 +290,7 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
                 </button>
                 <button
                   onClick={() => handleSimulateMatch('aerospace')}
-                  className={`px-3 py-1.5 rounded text-[11px] transition-colors cursor-pointer ${
+                  className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs transition-colors cursor-pointer flex items-center justify-center ${
                     cargoType === 'aerospace'
                       ? 'bg-[#d8b485] text-zinc-950 font-bold'
                       : 'bg-white/5 text-zinc-300 hover:text-white'
@@ -465,41 +485,41 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
 
             {/* Interactive ERP Payload View with Real-time Ingestion Stream */}
             <div className="p-4 rounded-lg bg-black/60 border border-white/5 font-mono text-xs">
-              <div className="flex items-center justify-between gap-2 mb-3">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <div className="flex flex-wrap items-center gap-2">
                   <button
                     onClick={() => setSelectedErp('sap')}
-                    className={`px-3 py-1 rounded text-[11px] transition-colors cursor-pointer ${
+                    className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
                       selectedErp === 'sap'
                         ? 'bg-white/15 text-white font-medium border border-white/10'
-                        : 'text-zinc-400 hover:text-white'
+                        : 'text-zinc-400 hover:text-white bg-white/5'
                     }`}
                   >
                     SAP S/4HANA
                   </button>
                   <button
                     onClick={() => setSelectedErp('oracle')}
-                    className={`px-3 py-1 rounded text-[11px] transition-colors cursor-pointer ${
+                    className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
                       selectedErp === 'oracle'
                         ? 'bg-white/15 text-white font-medium border border-white/10'
-                        : 'text-zinc-400 hover:text-white'
+                        : 'text-zinc-400 hover:text-white bg-white/5'
                     }`}
                   >
                     Oracle Cloud ERP
                   </button>
                   <button
                     onClick={() => setSelectedErp('dynamics')}
-                    className={`px-3 py-1 rounded text-[11px] transition-colors cursor-pointer ${
+                    className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
                       selectedErp === 'dynamics'
                         ? 'bg-white/15 text-white font-medium border border-white/10'
-                        : 'text-zinc-400 hover:text-white'
+                        : 'text-zinc-400 hover:text-white bg-white/5'
                     }`}
                   >
                     MS Dynamics 365
                   </button>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-[10px] text-zinc-400">
+                <div className="flex items-center gap-1.5 text-[10px] text-zinc-400 self-end sm:self-auto">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
                   <span className="text-white font-bold tabular-nums">#{erpSyncCounter}</span>
                 </div>
@@ -540,10 +560,10 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
           </span>
           <button
             onClick={onRequestDemo}
-            className="cursor-pointer inline-flex items-center gap-2 text-xs font-semibold text-[#d8b485] hover:text-[#ebd1b0] transition-colors whitespace-nowrap font-mono"
+            className="cursor-pointer inline-flex items-center justify-center gap-2 py-3 px-4 min-h-[48px] rounded-lg bg-white/5 sm:bg-transparent border border-white/10 sm:border-transparent text-xs font-semibold text-[#d8b485] hover:text-[#ebd1b0] active:scale-98 transition-colors whitespace-nowrap font-mono self-start sm:self-auto"
           >
             <span>Request Full API Documentation & Sandbox</span>
-            <ArrowRight size={13} />
+            <ArrowRight size={14} />
           </button>
         </motion.div>
       </div>

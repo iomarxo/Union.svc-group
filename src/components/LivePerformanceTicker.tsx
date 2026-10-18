@@ -108,6 +108,21 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
       const eventPool: Omit<TelemetryEvent, 'id' | 'timestamp'>[] = [
         {
           category: 'CIPHER',
+          message: `Riyadh Sovereign Hub: AES-256-GCM payload dispatched to Cairo Gateway (KSA SAMA HSM Sealed)`,
+          status: 'VERIFIED',
+        },
+        {
+          category: 'TELEMETRY',
+          message: `Cairo Gateway &rarr; Accra Terminal corridor: 18.5t MedTech batch in-transit across AfCFTA airway`,
+          status: 'COMMITTED',
+        },
+        {
+          category: 'ERP',
+          message: `Accra Atlantic Terminal: Blockchain Bill of Lading cryptographic signature committed to SAP S/4HANA`,
+          status: 'COMMITTED',
+        },
+        {
+          category: 'CIPHER',
           message: `Mutual TLS 1.3 handshake re-keyed for Carrier Node 041-JP`,
           status: 'VERIFIED',
         },
@@ -118,12 +133,12 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
         },
         {
           category: 'SECURITY',
-          message: `Tamper attempt blocked on IoT sensor #SN-88210 (HSM hardware boundary)`,
+          message: `Tamper attempt blocked on IoT cold-chain sensor #SN-88210 (HSM hardware boundary)`,
           status: 'BLOCKED',
         },
         {
           category: 'TELEMETRY',
-          message: `Offline mobile batch reconciled from Berlin-London corridor`,
+          message: `Offline mobile batch reconciled from Riyadh-Dubai sovereign corridor`,
           status: 'COMMITTED',
         },
         {
@@ -133,7 +148,7 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
         },
         {
           category: 'CIPHER',
-          message: `AES-256-GCM authenticated payload dispatched to Singapore Gateway`,
+          message: `AES-256-GCM authenticated payload dispatched to Tokyo Hub (HND)`,
           status: 'VERIFIED',
         },
       ];
@@ -153,18 +168,18 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
 
   return (
     <section className="relative z-20 border-b border-white/[0.08] bg-[#08080b] py-8 sm:py-10">
-      <div className="max-w-[1400px] mx-auto px-6">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         {/* Top Control Bar: Header & Live Feed Synchronizer */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-white/[0.06]">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded bg-white/5 border border-white/10 text-[#d8b485] relative">
-              <Activity size={15} className={isPlaying ? 'animate-pulse' : ''} />
+            <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 text-[#d8b485] relative shrink-0">
+              <Activity size={16} className={isPlaying ? 'animate-pulse' : ''} />
               {isPlaying && (
                 <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               )}
             </div>
             <div>
-              <div className="flex items-center gap-2 text-[11px] font-mono text-[#d8b485] uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-[11px] font-mono text-[#d8b485] uppercase tracking-wider flex-wrap">
                 <span>{t.kicker}</span>
                 <span className="text-zinc-500">·</span>
                 <span className="text-zinc-400 font-bold tabular-nums">{currentTime}</span>
@@ -175,16 +190,16 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
             </div>
           </div>
 
-          <div className="flex items-center gap-3 self-start sm:self-auto">
+          <div className="flex items-center gap-3 self-start sm:self-auto flex-wrap">
             {/* Live Throughput Gauge */}
-            <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded bg-black/60 border border-white/10 text-xs font-mono text-zinc-300">
-              <Wifi size={12} className="text-cyan-400" />
+            <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 min-h-[44px] rounded-lg bg-black/60 border border-white/10 text-xs font-mono text-zinc-300">
+              <Wifi size={13} className="text-cyan-400" />
               <span className="text-zinc-500 text-[10px] uppercase">Throughput:</span>
               <span className="text-white font-bold tabular-nums">{throughput} Gbps</span>
             </div>
 
             {/* Live Status Indicator */}
-            <div className="flex items-center gap-2 px-3 py-1 rounded bg-black/60 border border-white/10 text-xs font-mono">
+            <div className="flex items-center gap-2 px-3 py-2 min-h-[48px] rounded-lg bg-black/60 border border-white/10 text-xs font-mono">
               <span
                 className={`w-2 h-2 rounded-full ${
                   isPlaying ? 'bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse' : 'bg-amber-400'
@@ -195,25 +210,25 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
               </span>
             </div>
 
-            {/* Pause / Resume Button */}
+            {/* Pause / Resume Button with Touch Target (min 48x48px) */}
             <button
               onClick={() => setIsPlaying(!isPlaying)}
-              className="cursor-pointer p-1.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white transition-colors"
+              className="cursor-pointer min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 text-zinc-300 hover:text-white transition-all shrink-0"
               title={isPlaying ? t.pauseTooltip : t.resumeTooltip}
               aria-label={isPlaying ? t.pauseTooltip : t.resumeTooltip}
             >
-              {isPlaying ? <Pause size={13} /> : <Play size={13} />}
+              {isPlaying ? <Pause size={16} /> : <Play size={16} />}
             </button>
           </div>
         </div>
 
-        {/* 5-Column High-Density Telemetry Ticker Ledger */}
+        {/* High-Density Telemetry Ticker Ledger (Responsive Grid for Mobile & Desktop) */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 divide-y sm:divide-y-0 divide-white/[0.05]"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6"
         >
           {/* 1. Transactions Processed */}
           <div className="p-4 sm:p-5 rounded-lg bg-[#0c0c11] border border-white/[0.06] flex flex-col justify-between relative overflow-hidden group hover:border-white/15 transition-all">
@@ -278,7 +293,7 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
           </div>
 
           {/* 5. Average Stream Latency */}
-          <div className="col-span-2 lg:col-span-1 p-4 sm:p-5 rounded-lg bg-[#0c0c11] border border-white/[0.06] flex flex-col justify-between group hover:border-white/15 transition-all">
+          <div className="sm:col-span-2 lg:col-span-1 p-4 sm:p-5 rounded-lg bg-[#0c0c11] border border-white/[0.06] flex flex-col justify-between group hover:border-white/15 transition-all">
             <div className="flex items-center justify-between text-xs font-mono text-zinc-400 mb-2">
               <span className="truncate pr-1">{t.latencyLabel}</span>
               <Zap size={13} className="text-amber-400 shrink-0" />
@@ -294,15 +309,15 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
 
         {/* Live Streaming Audit Log Stream (Continuous Real-Time Feeds) */}
         <div className="mt-4 p-3.5 rounded-lg bg-black/60 border border-white/[0.06] font-mono text-xs">
-          <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/5 text-[11px] text-zinc-400">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 mb-2 border-b border-white/5 text-[11px] text-zinc-400">
             <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
               <span className="text-white font-bold uppercase tracking-wider text-[10px]">
                 Real-Time Network Telemetry Stream
               </span>
             </div>
             <div className="flex items-center gap-1.5 text-zinc-500 text-[10px]">
-              <CheckCircle2 size={11} className="text-emerald-400" />
+              <CheckCircle2 size={11} className="text-emerald-400 shrink-0" />
               <span>Continuous FIPS-140-3 Attestation</span>
             </div>
           </div>
@@ -315,29 +330,38 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
                   initial={{ opacity: 0, x: -10, height: 0 }}
                   animate={{ opacity: 1, x: 0, height: 'auto' }}
                   exit={{ opacity: 0, x: 10, height: 0 }}
-                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11px] py-1 border-b border-white/[0.03] last:border-0"
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-[11px] p-2 rounded bg-black/40 border border-white/5"
                 >
                   <div className="flex items-center gap-2 overflow-hidden">
                     <span
-                      className={`text-[9px] uppercase font-bold px-1.5 py-0.5 rounded border shrink-0 ${
-                        evt.category === 'SECURITY'
-                          ? 'bg-rose-500/10 text-rose-400 border-rose-500/20'
-                          : evt.category === 'CIPHER'
-                          ? 'bg-[#d8b485]/10 text-[#d8b485] border-[#d8b485]/20'
+                      className={`text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 ${
+                        evt.category === 'CIPHER'
+                          ? 'bg-[#d8b485]/15 text-[#d8b485] border border-[#d8b485]/30'
                           : evt.category === 'ERP'
-                          ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20'
-                          : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                          ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30'
+                          : evt.category === 'SECURITY'
+                          ? 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+                          : 'bg-purple-500/15 text-purple-400 border border-purple-500/30'
                       }`}
                     >
                       {evt.category}
                     </span>
                     <span className="text-zinc-200 truncate">{evt.message}</span>
                   </div>
-
-                  <div className="flex items-center gap-2 text-zinc-500 text-[10px] shrink-0 self-end sm:self-auto">
-                    <span>{evt.timestamp}</span>
-                    <span className="text-emerald-400 font-bold">{evt.status}</span>
+                  <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto text-[10px] text-zinc-500">
+                    <span className="tabular-nums">{evt.timestamp}</span>
+                    <span
+                      className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
+                        evt.status === 'VERIFIED'
+                          ? 'text-emerald-400 bg-emerald-500/10'
+                          : evt.status === 'COMMITTED'
+                          ? 'text-cyan-400 bg-cyan-500/10'
+                          : 'text-amber-400 bg-amber-500/10'
+                      }`}
+                    >
+                      {evt.status}
+                    </span>
                   </div>
                 </motion.div>
               ))}

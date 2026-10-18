@@ -42,21 +42,21 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
   ];
 
   return (
-    <section id="investors" className="py-20 sm:py-28 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
-      <div className="max-w-[1400px] mx-auto px-6">
+    <section id="investors" className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         {/* Section Header with whileInView reveal */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16"
         >
           <div className="max-w-3xl">
             <div className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-3">
               {t.kicker}
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-3 sm:mb-4">
               {t.title}
             </h2>
             <p className="text-sm sm:text-base text-zinc-400 font-light leading-relaxed">
@@ -66,9 +66,9 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
 
           <button
             onClick={onRequestInvestmentDeck}
-            className="cursor-pointer inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-semibold tracking-wide text-zinc-950 bg-[#d8b485] hover:bg-[#c9a373] transition-colors rounded whitespace-nowrap self-start md:self-auto shadow-sm"
+            className="cursor-pointer inline-flex items-center justify-center gap-2 px-6 py-3.5 min-h-[48px] text-xs font-semibold tracking-wide text-zinc-950 bg-[#d8b485] hover:bg-[#c9a373] active:scale-98 transition-all rounded-lg whitespace-nowrap self-start md:self-auto shadow-sm w-full sm:w-auto"
           >
-            <Download size={14} />
+            <Download size={15} />
             <span>{t.ctaButton}</span>
           </button>
         </motion.div>
@@ -119,9 +119,9 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
 
               <div className="divide-y divide-white/[0.06] font-mono text-xs mb-6">
                 {financialComparison.map((row, rIdx) => (
-                  <div key={`comp-${rIdx}`} className="py-3.5 space-y-1">
-                    <div className="text-zinc-300 font-semibold">{row.metric}</div>
-                    <div className="grid grid-cols-2 gap-2 text-[11px]">
+                  <div key={`comp-${rIdx}`} className="py-3.5 space-y-1.5">
+                    <div className="text-zinc-200 font-semibold">{row.metric}</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] pt-1">
                       <div>
                         <span className="text-zinc-500 block">Traditional:</span>
                         <span className="text-zinc-400">{row.traditional}</span>
@@ -137,18 +137,18 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
             </div>
 
             {/* 3 Key Financial Ratios */}
-            <div className="grid grid-cols-3 gap-3 pt-4 border-t border-white/5 font-mono text-center">
-              <div className="p-2.5 rounded bg-black/40 border border-white/5">
-                <div className="text-lg font-bold text-white tabular-nums">$4.2T</div>
-                <div className="text-[10px] text-zinc-500">TAM Opportunity</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-4 border-t border-white/5 font-mono text-center">
+              <div className="p-3 rounded-lg bg-black/40 border border-white/5">
+                <div className="text-xl font-bold text-white tabular-nums">$4.2T</div>
+                <div className="text-[10px] text-zinc-500 mt-0.5">TAM Opportunity</div>
               </div>
-              <div className="p-2.5 rounded bg-black/40 border border-white/5">
-                <div className="text-lg font-bold text-[#d8b485] tabular-nums">138%</div>
-                <div className="text-[10px] text-zinc-500">Net Retention Rate</div>
+              <div className="p-3 rounded-lg bg-black/40 border border-white/5">
+                <div className="text-xl font-bold text-[#d8b485] tabular-nums">138%</div>
+                <div className="text-[10px] text-zinc-500 mt-0.5">Net Retention Rate</div>
               </div>
-              <div className="p-2.5 rounded bg-black/40 border border-white/5">
-                <div className="text-lg font-bold text-emerald-400 tabular-nums">3.8x</div>
-                <div className="text-[10px] text-zinc-500">YoY Volume</div>
+              <div className="p-3 rounded-lg bg-black/40 border border-white/5">
+                <div className="text-xl font-bold text-emerald-400 tabular-nums">3.8x</div>
+                <div className="text-[10px] text-zinc-500 mt-0.5">YoY Volume</div>
               </div>
             </div>
           </div>
@@ -156,7 +156,7 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
 
         {/* Commercial Transport Carrier Visual + Pitch Deck Callout */}
         <div className="p-6 sm:p-8 rounded-xl bg-[#0c0c12] border border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
             <div className="w-14 h-14 rounded-lg overflow-hidden border border-white/10 shrink-0">
               <img
                 src="/src/assets/images/telematics_transport_1792232621731.jpg"
@@ -177,9 +177,9 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
 
           <button
             onClick={onRequestInvestmentDeck}
-            className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded text-xs font-semibold text-zinc-950 bg-[#d8b485] hover:bg-[#c9a373] transition-colors whitespace-nowrap"
+            className="cursor-pointer inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[48px] rounded-lg text-xs font-semibold text-zinc-950 bg-[#d8b485] hover:bg-[#c9a373] active:scale-98 transition-all whitespace-nowrap w-full md:w-auto shadow-sm"
           >
-            <Download size={13} />
+            <Download size={14} />
             <span>{t.ctaButton}</span>
           </button>
         </div>

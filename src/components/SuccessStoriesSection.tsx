@@ -201,6 +201,9 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
     return () => clearInterval(timer);
   }, [isAutoCycling, hoveredCardId]);
 
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
   const handleNext = () => {
     setIsAutoCycling(false);
     setActiveIndex((prev) => (prev + 1) % CASE_STUDIES.length);
@@ -211,11 +214,32 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
     setActiveIndex((prev) => (prev - 1 + CASE_STUDIES.length) % CASE_STUDIES.length);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 45;
+    const isRightSwipe = distance < -45;
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrev();
+    }
+  };
+
   return (
-    <section id="case-studies" className="py-20 sm:py-28 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
-      <div className="max-w-[1400px] mx-auto px-6">
+    <section id="case-studies" className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -227,7 +251,7 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
               <Sparkles size={13} className="text-[#d8b485]" />
               <span>Verified Enterprise Deployments · Production Evidence</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-3 sm:mb-4">
               Logistics Success Stories
             </h2>
             <p className="text-sm sm:text-base text-zinc-400 font-light leading-relaxed">
@@ -235,35 +259,41 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
             </p>
           </motion.div>
 
-          {/* Carousel Navigation Controls */}
+          {/* Carousel Navigation Controls with 48x48px Touch Targets */}
           <div className="flex items-center gap-3 font-mono text-xs self-start md:self-auto">
             <span className="text-zinc-500 text-[11px] tabular-nums">
               0{activeIndex + 1} / 0{CASE_STUDIES.length}
             </span>
 
-            <div className="flex items-center gap-1.5 p-1 rounded-lg bg-white/5 border border-white/10">
+            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/5 border border-white/10">
               <button
                 onClick={handlePrev}
-                className="p-2 rounded bg-black/40 hover:bg-white/15 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+                className="w-12 h-12 rounded-lg bg-black/40 hover:bg-white/15 text-zinc-300 hover:text-white transition-colors cursor-pointer flex items-center justify-center shrink-0"
                 title="Previous Case Study"
                 aria-label="Previous Case Study"
               >
-                <ChevronLeft size={16} />
+                <ChevronLeft size={18} />
               </button>
               <button
                 onClick={handleNext}
-                className="p-2 rounded bg-black/40 hover:bg-white/15 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+                className="w-12 h-12 rounded-lg bg-black/40 hover:bg-white/15 text-zinc-300 hover:text-white transition-colors cursor-pointer flex items-center justify-center shrink-0"
                 title="Next Case Study"
                 aria-label="Next Case Study"
               >
-                <ChevronRight size={16} />
+                <ChevronRight size={18} />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Horizontal Carousel Viewport with Hover-Activated Details */}
-        <div ref={containerRef} className="relative overflow-hidden mb-10">
+        {/* Horizontal Carousel Viewport with Touch Swiping */}
+        <div
+          ref={containerRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="relative overflow-hidden mb-8 sm:mb-10 touch-pan-y"
+        >
           <div
             className="flex transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] gap-6"
             style={{
@@ -365,8 +395,8 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
                       </div>
 
                       {/* 3 Concrete Quantified Metrics Strip */}
-                      <div className="grid grid-cols-3 gap-3 p-4 rounded-lg bg-[#0c0c11] border border-white/5 font-mono text-center mb-6">
-                        <div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-lg bg-[#0c0c11] border border-white/5 font-mono text-center mb-6">
+                        <div className="py-1">
                           <div className="text-xl sm:text-2xl font-bold text-white tabular-nums">
                             {study.quantifiedImpact.primaryStat}
                           </div>
@@ -375,7 +405,7 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
                           </div>
                         </div>
 
-                        <div className="border-x border-white/5">
+                        <div className="border-y sm:border-y-0 sm:border-x border-white/5 py-2 sm:py-0">
                           <div className="text-xl sm:text-2xl font-bold text-[#d8b485] tabular-nums">
                             {study.quantifiedImpact.secondaryStat}
                           </div>
@@ -384,7 +414,7 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
                           </div>
                         </div>
 
-                        <div>
+                        <div className="py-1">
                           <div className="text-xl sm:text-2xl font-bold text-emerald-400 tabular-nums">
                             {study.quantifiedImpact.tertiaryStat}
                           </div>
@@ -434,9 +464,9 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
           </div>
         </div>
 
-        {/* Carousel Indicators & Schedule Walkthrough Action */}
+        {/* Carousel Indicators & Schedule Walkthrough Action with 48px touch targets */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/[0.08]">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {CASE_STUDIES.map((_, i) => (
               <button
                 key={`indicator-${i}`}
@@ -444,20 +474,24 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
                   setIsAutoCycling(false);
                   setActiveIndex(i);
                 }}
-                className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                  activeIndex === i ? 'w-8 bg-[#d8b485]' : 'w-2.5 bg-white/20 hover:bg-white/40'
-                }`}
+                className="min-h-[48px] min-w-[36px] flex items-center justify-center cursor-pointer p-1"
                 aria-label={`Go to case study ${i + 1}`}
-              />
+              >
+                <span
+                  className={`h-2 rounded-full transition-all block ${
+                    activeIndex === i ? 'w-8 bg-[#d8b485]' : 'w-2.5 bg-white/20 hover:bg-white/40'
+                  }`}
+                />
+              </button>
             ))}
           </div>
 
           <button
             onClick={onRequestDemo}
-            className="cursor-pointer inline-flex items-center gap-2 text-xs font-semibold text-[#d8b485] hover:text-[#ebd1b0] transition-colors font-mono"
+            className="cursor-pointer inline-flex items-center justify-center gap-2 py-3 px-4 min-h-[48px] rounded-lg bg-white/5 sm:bg-transparent border border-white/10 sm:border-transparent text-xs font-semibold text-[#d8b485] hover:text-[#ebd1b0] active:scale-98 transition-colors font-mono self-start sm:self-auto"
           >
             <span>Request In-Depth Technical Case Study & Architecture Blueprint</span>
-            <ArrowRight size={13} />
+            <ArrowRight size={14} />
           </button>
         </div>
       </div>

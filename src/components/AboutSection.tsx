@@ -34,37 +34,37 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
   ];
 
   return (
-    <section id="about" className="py-20 sm:py-28 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
-      <div className="max-w-[1400px] mx-auto px-6">
+    <section id="about" className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         {/* Section Header with whileInView reveal */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-14"
+          className="max-w-3xl mb-10 sm:mb-14"
         >
           <div className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-3">
             {t.kicker}
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-4 sm:mb-6">
             {t.title}
           </h2>
-          <p className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-zinc-300 font-light leading-relaxed">
             <strong className="text-white font-semibold">Unionsvc Group</strong> is a leading logistics technology company empowering global supply chains through a secure, highly reliable digital brokerage platform. By combining predictive AI, end-to-end communication encryption, and seamless enterprise system integration, we deliver an unprecedented logistics and resource management experience for high-stakes industries and corporate sectors.
           </p>
         </motion.div>
 
         {/* Asymmetric Composition: Visual Operations Control + Interactive Architecture Dossier */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-12"
-        >
-          {/* Left Column (5 Cols): Operations Center Visual Anchor */}
-          <div className="lg:col-span-5 rounded-xl overflow-hidden border border-white/10 relative min-h-[340px] lg:min-h-full flex flex-col justify-end group">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-12">
+          {/* Left Column (5 Cols): Operations Center Visual Anchor with graceful whileInView reveal */}
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 rounded-xl overflow-hidden border border-white/10 relative min-h-[340px] lg:min-h-full flex flex-col justify-end group shadow-xl"
+          >
             <img
               src="/src/assets/images/control_tower_operations_1792232601649.jpg"
               alt="Unionsvc Group Global Control Operations Tower"
@@ -83,17 +83,25 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
                 Operating hubs: Tokyo · Berlin · London · Global
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Column (7 Cols): Interactive Architecture Spec Dossier (Not repetitive cards!) */}
+          {/* Right Column (7 Cols): Interactive Architecture Spec Dossier with Staggered Entrance Animations */}
           <div className="lg:col-span-7 flex flex-col justify-between gap-3">
             {t.pillars.map((pillar, idx) => {
               const isActive = activeTenet === idx;
               const spec = tenetSpecs[idx];
 
               return (
-                <div
+                <motion.div
                   key={`pillar-${pillar.index}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{
+                    duration: 0.55,
+                    delay: idx * 0.12,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                   className={`rounded-xl border transition-all duration-300 overflow-hidden ${
                     isActive
                       ? 'bg-[#0e0e16] border-[#d8b485]/40 shadow-lg'
@@ -155,25 +163,31 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
                       </div>
                     </div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Quiet Footnote Rule */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
+        {/* Quiet Footnote Rule with whileInView reveal */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-white/[0.08]"
+        >
           <span className="text-xs font-mono text-zinc-400">
             Engineered for high-stakes enterprise supply chains, aerospace, pharmaceuticals, and industrial manufacturing.
           </span>
           <button
             onClick={onExploreTech}
-            className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-[#d8b485] hover:text-[#e4c9a7] transition-colors whitespace-nowrap"
+            className="cursor-pointer inline-flex items-center justify-center gap-2 py-3 px-4 min-h-[48px] rounded-lg bg-white/5 sm:bg-transparent border border-white/10 sm:border-transparent text-xs font-semibold text-[#d8b485] hover:text-[#e4c9a7] active:scale-98 transition-all whitespace-nowrap self-start sm:self-auto"
           >
             <span>Explore Key Solutions & Tech Stack</span>
-            <ArrowRight size={13} />
+            <ArrowRight size={14} />
           </button>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
