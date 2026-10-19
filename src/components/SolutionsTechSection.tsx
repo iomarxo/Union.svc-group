@@ -163,6 +163,11 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
   const curCargo = cargoConfigs[cargoType];
   const curErp = erpPayloads[selectedErp];
 
+  const item01 = t.items.find((i) => i.id === 'freight-brokerage') || t.items[0];
+  const item02 = t.items.find((i) => i.id === 'encrypted-comms') || t.items[1];
+  const item03 = t.items.find((i) => i.id === 'erp-integration') || t.items[2];
+  const item04 = t.items.find((i) => i.id === 'zero-downtime') || t.items[3];
+
   return (
     <section id="solutions" className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
@@ -207,32 +212,26 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                   <span className="text-xs font-mono text-white bg-white/5 px-2.5 py-0.5 rounded border border-white/10 tabular-nums">
-                    &lt; 45s Dispatch Latency
+                    {item01.metricValue} {item01.metricLabel}
                   </span>
                 </div>
               </div>
 
               <h3 className="text-xl font-bold text-white mb-1">
-                AI-Powered Smart Freight Brokerage
+                {item01.title}
               </h3>
               <p className="text-xs font-mono text-zinc-400 mb-6 uppercase tracking-wider">
-                Precision matching connecting cargo demand with optimal carrier capacity
+                {item01.subtitle}
               </p>
 
-              {/* Exact Bullets */}
+              {/* Exact Bullets (3-5 words per bullet) */}
               <ul className="space-y-2.5 mb-6 text-xs text-zinc-300">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-[#d8b485] shrink-0 mt-0.5" />
-                  <span>Precision AI matching connecting cargo demand with optimal carrier capacity.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-[#d8b485] shrink-0 mt-0.5" />
-                  <span>Real-time dynamic pricing driven by live market analytics and variable cost factors.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-[#d8b485] shrink-0 mt-0.5" />
-                  <span>Automated end-to-end documentation, dispatching, and order workflows.</span>
-                </li>
+                {item01.bullets.map((bullet, idx) => (
+                  <li key={`item01-b-${idx}`} className="flex items-start gap-2">
+                    <CheckCircle2 size={14} className="text-[#d8b485] shrink-0 mt-0.5" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -337,26 +336,20 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
               </div>
 
               <h3 className="text-xl font-bold text-white mb-1">
-                Ultra-Secure & Encrypted Communications
+                {item02.title}
               </h3>
               <p className="text-xs font-mono text-zinc-400 mb-6 uppercase tracking-wider">
-                Defense-grade telemetry protection & zero trust controls
+                {item02.subtitle}
               </p>
 
-              {/* Exact Bullets */}
+              {/* Exact Bullets (3-5 words per bullet) */}
               <ul className="space-y-2.5 mb-6 text-xs text-zinc-300">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                  <span>End-to-end encryption for all shipment data, telemetry, and financial transactions (AES-256 / TLS 1.3).</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Advanced IoT and telematics security protecting fleet sensors against tampering and cyber threats.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Strict Zero Trust Architecture controlling system access across all endpoints.</span>
-                </li>
+                {item02.bullets.map((bullet, idx) => (
+                  <li key={`item02-b-${idx}`} className="flex items-start gap-2">
+                    <CheckCircle2 size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -400,22 +393,20 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
               </div>
 
               <h3 className="text-xl font-bold text-white mb-1">
-                High Reliability & Zero-Downtime Operations
+                {item04.title}
               </h3>
               <p className="text-xs font-mono text-zinc-400 mb-6 uppercase tracking-wider">
-                Fault-tolerant event stream with offline edge sync
+                {item04.subtitle}
               </p>
 
-              {/* Exact Bullets */}
+              {/* Exact Bullets (3-5 words per bullet) */}
               <ul className="space-y-2.5 mb-6 text-xs text-zinc-300">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-purple-400 shrink-0 mt-0.5" />
-                  <span>Sub-second real-time data streaming and event processing powered by robust event-driven architectures.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-purple-400 shrink-0 mt-0.5" />
-                  <span>Offline-first mobile capabilities enabling drivers to log critical telemetry seamlessly during connectivity blackouts.</span>
-                </li>
+                {item04.bullets.map((bullet, idx) => (
+                  <li key={`item04-b-${idx}`} className="flex items-start gap-2">
+                    <CheckCircle2 size={14} className="text-purple-400 shrink-0 mt-0.5" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -458,28 +449,26 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                   <span className="text-xs font-mono text-white bg-white/5 px-2.5 py-0.5 rounded border border-white/10">
-                    99.4% Manual Entry Removed
+                    {item03.metricValue} {item03.metricLabel}
                   </span>
                 </div>
               </div>
 
               <h3 className="text-xl font-bold text-white mb-1">
-                Enterprise System Integration (Unified API)
+                {item03.title}
               </h3>
               <p className="text-xs font-mono text-zinc-400 mb-6 uppercase tracking-wider">
-                Direct two-way synchronization with global ERP platforms
+                {item03.subtitle}
               </p>
 
-              {/* Exact Bullets */}
+              {/* Exact Bullets (3-5 words per bullet) */}
               <ul className="space-y-2.5 mb-6 text-xs text-zinc-300">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-cyan-400 shrink-0 mt-0.5" />
-                  <span>Seamless, direct API integration with leading ERP platforms (SAP, Oracle, Microsoft Dynamics).</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-cyan-400 shrink-0 mt-0.5" />
-                  <span>Automated real-time synchronization of inventory, warehouse management (WMS), and shipment tracking without manual data entry.</span>
-                </li>
+                {item03.bullets.map((bullet, idx) => (
+                  <li key={`item03-b-${idx}`} className="flex items-start gap-2">
+                    <CheckCircle2 size={14} className="text-cyan-400 shrink-0 mt-0.5" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 

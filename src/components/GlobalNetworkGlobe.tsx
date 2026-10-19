@@ -791,10 +791,10 @@ export const GlobalNetworkGlobe: React.FC<GlobalNetworkGlobeProps> = ({
             ))}
           </div>
 
-          {/* Interactive react-globe.gl 3D Viewport */}
+          {/* Interactive react-globe.gl 3D Viewport with touch-pan-y for smooth vertical scrolling */}
           <div
             ref={containerRef}
-            className="relative flex items-center justify-center min-h-[320px] sm:min-h-[420px] lg:min-h-[480px] overflow-hidden select-none rounded-lg border border-white/5 bg-black/40"
+            className="relative flex items-center justify-center min-h-[320px] sm:min-h-[420px] lg:min-h-[480px] overflow-hidden select-none rounded-lg border border-white/5 bg-black/40 touch-pan-y"
           >
             {/* Atmospheric Background Radial Glow */}
             <div

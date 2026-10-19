@@ -39,9 +39,10 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
       <div className="bg-[#0e0e15] border border-white/10 rounded-xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl text-left">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          aria-label="Close modal"
+          className="absolute top-4 right-4 w-12 h-12 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center"
         >
-          <X size={18} />
+          <X size={20} />
         </button>
 
         {submitted ? (
@@ -57,7 +58,7 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
             </p>
             <button
               onClick={onClose}
-              className="cursor-pointer px-6 py-2.5 rounded bg-[#d8b485] hover:bg-[#c4a071] text-zinc-950 font-mono text-xs font-bold uppercase transition-all"
+              className="cursor-pointer px-6 py-3 min-h-[48px] rounded-lg bg-[#d8b485] hover:bg-[#c4a071] text-zinc-950 font-mono text-xs font-bold uppercase transition-all"
             >
               Return to Platform
             </button>
@@ -86,7 +87,7 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
                   placeholder="e.g. Jordan Hayes"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
+                  className="w-full min-h-[48px] px-4 py-3 rounded-lg bg-black/60 border border-white/10 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-[#d8b485] transition-colors"
                 />
               </div>
 
@@ -100,11 +101,11 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
                   placeholder="jordan@enterprise.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
+                  className="w-full min-h-[48px] px-4 py-3 rounded-lg bg-black/60 border border-white/10 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-[#d8b485] transition-colors"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-zinc-400 uppercase tracking-wider mb-1.5">
                     Monthly Shipments
@@ -112,7 +113,7 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
                   <select
                     value={formData.freightVolume}
                     onChange={(e) => setFormData({ ...formData, freightVolume: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white focus:outline-none focus:border-[#d8b485]"
+                    className="w-full min-h-[48px] px-4 py-3 rounded-lg bg-black/60 border border-white/10 text-white text-sm focus:outline-none focus:border-[#d8b485] transition-colors cursor-pointer"
                   >
                     <option value="50-100" className="bg-zinc-900">50 - 100 loads</option>
                     <option value="100-500" className="bg-zinc-900">100 - 500 loads</option>
@@ -127,7 +128,7 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
                   <select
                     value={formData.preferredSystem}
                     onChange={(e) => setFormData({ ...formData, preferredSystem: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white focus:outline-none focus:border-[#d8b485]"
+                    className="w-full min-h-[48px] px-4 py-3 rounded-lg bg-black/60 border border-white/10 text-white text-sm focus:outline-none focus:border-[#d8b485] transition-colors cursor-pointer"
                   >
                     <option value="sap" className="bg-zinc-900">SAP S/4HANA</option>
                     <option value="oracle" className="bg-zinc-900">Oracle Cloud ERP</option>
@@ -141,10 +142,10 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full py-3 px-4 rounded text-xs font-bold font-mono tracking-wider text-zinc-950 bg-[#d8b485] hover:bg-[#c4a071] transition-all uppercase flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="w-full min-h-[48px] py-3.5 px-6 rounded-lg text-xs font-bold font-mono tracking-wider text-zinc-950 bg-[#d8b485] hover:bg-[#c4a071] active:scale-98 transition-all uppercase flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-md"
                 >
                   {submitting ? 'Generating Sandbox Environment...' : 'Access Live Platform Demo'}
-                  <ArrowRight size={14} />
+                  <ArrowRight size={15} />
                 </button>
               </div>
 

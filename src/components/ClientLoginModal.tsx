@@ -41,7 +41,8 @@ export const ClientLoginModal: React.FC<ClientLoginModalProps> = ({
       <div className="bg-[#0e0e15] border border-white/10 rounded-xl max-w-md w-full p-6 sm:p-8 relative shadow-2xl text-left">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          aria-label="Close Login Modal"
+          className="absolute top-4 right-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer"
         >
           <X size={18} />
         </button>
@@ -65,7 +66,7 @@ export const ClientLoginModal: React.FC<ClientLoginModalProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="cursor-pointer w-full py-2.5 rounded bg-[#d8b485] hover:bg-[#c4a071] text-zinc-950 font-mono text-xs font-bold uppercase transition-all"
+              className="cursor-pointer w-full min-h-[48px] py-3 rounded-lg bg-[#d8b485] hover:bg-[#c4a071] text-zinc-950 font-mono text-xs font-bold uppercase transition-all flex items-center justify-center"
             >
               Continue to Logistics Control Tower
             </button>
@@ -94,7 +95,7 @@ export const ClientLoginModal: React.FC<ClientLoginModalProps> = ({
                   placeholder="identity@enterprise.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
+                  className="w-full px-3.5 py-3 min-h-[48px] text-base sm:text-xs rounded-lg bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
                 />
               </div>
 
@@ -108,7 +109,7 @@ export const ClientLoginModal: React.FC<ClientLoginModalProps> = ({
                   placeholder="••••••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
+                  className="w-full px-3.5 py-3 min-h-[48px] text-base sm:text-xs rounded-lg bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
                 />
               </div>
 
@@ -122,7 +123,7 @@ export const ClientLoginModal: React.FC<ClientLoginModalProps> = ({
                   placeholder="6-digit token (e.g. 892041)"
                   value={twoFactorCode}
                   onChange={(e) => setTwoFactorCode(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
+                  className="w-full px-3.5 py-3 min-h-[48px] text-base sm:text-xs rounded-lg bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
                 />
               </div>
 
@@ -130,7 +131,7 @@ export const ClientLoginModal: React.FC<ClientLoginModalProps> = ({
                 <button
                   type="submit"
                   disabled={isAuthenticating}
-                  className="w-full py-3 px-4 rounded text-xs font-bold font-mono tracking-wider text-zinc-950 bg-[#d8b485] hover:bg-[#c4a071] transition-all uppercase flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="w-full min-h-[48px] py-3 px-4 rounded-lg text-xs font-bold font-mono tracking-wider text-zinc-950 bg-[#d8b485] hover:bg-[#c4a071] transition-all uppercase flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 active:scale-98"
                 >
                   {isAuthenticating ? 'Verifying Zero Trust Auth...' : 'Authenticate & Enter Portal'}
                   <ArrowRight size={14} />
@@ -141,7 +142,7 @@ export const ClientLoginModal: React.FC<ClientLoginModalProps> = ({
                 <button
                   type="button"
                   onClick={handleUseDemoCredentials}
-                  className="text-[#d8b485] hover:underline cursor-pointer"
+                  className="min-h-[44px] flex items-center text-[#d8b485] hover:underline cursor-pointer"
                 >
                   Fill Demo Credentials
                 </button>

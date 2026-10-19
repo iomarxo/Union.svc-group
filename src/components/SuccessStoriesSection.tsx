@@ -19,6 +19,12 @@ import {
 } from 'lucide-react';
 import { Language } from '../translations';
 
+// High-resolution image assets for case studies
+import telematicsTransportImg from '../assets/images/telematics_transport_1792232621731.jpg';
+import enterpriseDataNodeImg from '../assets/images/enterprise_data_node_1792232620653.jpg';
+import controlTowerImg from '../assets/images/control_tower_operations_1792232601649.jpg';
+import heroSmartLogisticsImg from '../assets/images/hero_smart_logistics_1792232602542.jpg';
+
 export interface CaseStudy {
   id: string;
   industry: string;
@@ -79,7 +85,7 @@ const CASE_STUDIES: CaseStudy[] = [
       esgReduction: '-18.4% Scope 3 empty backhaul emissions',
       carrierNode: 'Carrier Fleet Cluster 041-JP / 014-EU',
     },
-    image: '/src/assets/images/telematics_transport_1792232621731.jpg',
+    image: telematicsTransportImg,
   },
   {
     id: 'biopharma-coldchain',
@@ -110,7 +116,7 @@ const CASE_STUDIES: CaseStudy[] = [
       esgReduction: '-22.8% cold-chain transit waste elimination',
       carrierNode: 'Carrier Node 118-EU (Pharma Certified)',
     },
-    image: '/src/assets/images/enterprise_data_node_1792232620653.jpg',
+    image: enterpriseDataNodeImg,
   },
   {
     id: 'aerospace-defense',
@@ -141,7 +147,7 @@ const CASE_STUDIES: CaseStudy[] = [
       esgReduction: '-16.7% fuel burn via AI route altitude optimization',
       carrierNode: 'Carrier Node 209-UK / Escort Protocol',
     },
-    image: '/src/assets/images/control_tower_operations_1792232601649.jpg',
+    image: controlTowerImg,
   },
   {
     id: 'semiconductor-high-tech',
@@ -172,7 +178,7 @@ const CASE_STUDIES: CaseStudy[] = [
       esgReduction: '94.6% reverse return backhaul fill rate achieved',
       carrierNode: 'Carrier Node 087-SG / 094-JP',
     },
-    image: '/src/assets/images/hero_smart_logistics_1792232602542.jpg',
+    image: heroSmartLogisticsImg,
   },
 ];
 

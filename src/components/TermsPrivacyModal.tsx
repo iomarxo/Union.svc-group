@@ -24,7 +24,8 @@ export const TermsPrivacyModal: React.FC<TermsPrivacyModalProps> = ({
       <div className="bg-[#0e0e15] border border-white/10 rounded-xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl text-left max-h-[85vh] flex flex-col">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          aria-label="Close legal terms modal"
+          className="absolute top-4 right-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer"
         >
           <X size={18} />
         </button>
@@ -78,7 +79,7 @@ export const TermsPrivacyModal: React.FC<TermsPrivacyModalProps> = ({
           </span>
           <button
             onClick={onClose}
-            className="cursor-pointer px-4 py-2 rounded bg-white/10 hover:bg-white/15 text-xs text-white font-mono uppercase"
+            className="cursor-pointer min-h-[44px] px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 active:scale-98 text-xs text-white font-mono uppercase flex items-center justify-center"
           >
             Close
           </button>

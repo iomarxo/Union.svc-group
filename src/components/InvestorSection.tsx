@@ -2,6 +2,7 @@ import React from 'react';
 import { Download, ArrowUpRight, TrendingUp, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Language, translations } from '../translations';
+import telematicsTransportImg from '../assets/images/telematics_transport_1792232621731.jpg';
 
 interface InvestorSectionProps {
   onRequestInvestmentDeck: () => void;
@@ -100,9 +101,21 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
                 <h3 className="text-base sm:text-lg font-bold text-white mb-2">
                   {point.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-light">
+                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-light mb-3">
                   {point.desc}
                 </p>
+
+                {/* Bullet-Point Economy: 3-5 words per bullet */}
+                {point.bullets && point.bullets.length > 0 && (
+                  <div className="space-y-1.5 pt-2.5 border-t border-white/5 font-mono text-xs">
+                    {point.bullets.map((bullet, bIdx) => (
+                      <div key={`point-b-${bIdx}`} className="flex items-center gap-2 text-zinc-300">
+                        <CheckCircle2 size={13} className="text-[#d8b485] shrink-0" />
+                        <span>{bullet}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -136,19 +149,23 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
               </div>
             </div>
 
-            {/* 3 Key Financial Ratios */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-4 border-t border-white/5 font-mono text-center">
+            {/* 4 Key Financial Metrics (Visual Metric Callouts) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 pt-4 border-t border-white/5 font-mono text-center">
               <div className="p-3 rounded-lg bg-black/40 border border-white/5">
-                <div className="text-xl font-bold text-white tabular-nums">$4.2T</div>
-                <div className="text-[10px] text-zinc-500 mt-0.5">TAM Opportunity</div>
+                <div className="text-lg sm:text-xl font-bold text-white tabular-nums">$4.2T</div>
+                <div className="text-[10px] text-zinc-500 mt-0.5 uppercase">Global TAM</div>
               </div>
               <div className="p-3 rounded-lg bg-black/40 border border-white/5">
-                <div className="text-xl font-bold text-[#d8b485] tabular-nums">138%</div>
-                <div className="text-[10px] text-zinc-500 mt-0.5">Net Retention Rate</div>
+                <div className="text-lg sm:text-xl font-bold text-[#d8b485] tabular-nums">84%</div>
+                <div className="text-[10px] text-zinc-500 mt-0.5 uppercase">Gross Margin</div>
               </div>
               <div className="p-3 rounded-lg bg-black/40 border border-white/5">
-                <div className="text-xl font-bold text-emerald-400 tabular-nums">3.8x</div>
-                <div className="text-[10px] text-zinc-500 mt-0.5">YoY Volume</div>
+                <div className="text-lg sm:text-xl font-bold text-emerald-400 tabular-nums">138%</div>
+                <div className="text-[10px] text-zinc-500 mt-0.5 uppercase">Net Retention</div>
+              </div>
+              <div className="p-3 rounded-lg bg-black/40 border border-white/5">
+                <div className="text-lg sm:text-xl font-bold text-white tabular-nums">3.8x</div>
+                <div className="text-[10px] text-zinc-500 mt-0.5 uppercase">YoY Growth</div>
               </div>
             </div>
           </div>
@@ -159,7 +176,7 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
             <div className="w-14 h-14 rounded-lg overflow-hidden border border-white/10 shrink-0">
               <img
-                src="/src/assets/images/telematics_transport_1792232621731.jpg"
+                src={telematicsTransportImg}
                 alt="Connected fleet transport"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"

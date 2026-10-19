@@ -35,7 +35,8 @@ export const InvestorDeckModal: React.FC<InvestorDeckModalProps> = ({
       <div className="bg-[#0e0e15] border border-white/10 rounded-xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl text-left">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          aria-label="Close investor deck modal"
+          className="absolute top-4 right-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer"
         >
           <X size={18} />
         </button>
@@ -52,7 +53,7 @@ export const InvestorDeckModal: React.FC<InvestorDeckModalProps> = ({
               The complete <strong className="text-white">Unionsvc Group Executive Pitch Deck</strong> and <strong className="text-white">Series A Financial Projections (Q4 2024 - 2027)</strong> have been transmitted to <strong className="text-white">{email}</strong>.
             </p>
 
-            <div className="w-full p-4 rounded bg-black/50 border border-white/5 text-left font-mono text-xs text-zinc-400 mb-6 space-y-1.5">
+            <div className="w-full p-4 rounded-lg bg-black/50 border border-white/5 text-left font-mono text-xs text-zinc-400 mb-6 space-y-1.5">
               <div className="text-white font-semibold flex items-center justify-between">
                 <span>Dossier Checklist:</span>
                 <span className="text-emerald-400">PDF + Data Room Access</span>
@@ -64,7 +65,7 @@ export const InvestorDeckModal: React.FC<InvestorDeckModalProps> = ({
 
             <button
               onClick={onClose}
-              className="cursor-pointer px-6 py-2.5 rounded bg-[#d8b485] hover:bg-[#c4a071] text-zinc-950 font-mono text-xs font-bold uppercase transition-all"
+              className="cursor-pointer px-6 py-3 min-h-[48px] rounded-lg bg-[#d8b485] hover:bg-[#c4a071] text-zinc-950 font-mono text-xs font-bold uppercase transition-all flex items-center justify-center"
             >
               Close Window
             </button>
@@ -93,7 +94,7 @@ export const InvestorDeckModal: React.FC<InvestorDeckModalProps> = ({
                   placeholder="partner@sequoia-capital.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
+                  className="w-full px-3.5 py-3 min-h-[48px] text-base sm:text-xs rounded-lg bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
                 />
               </div>
 
@@ -107,7 +108,7 @@ export const InvestorDeckModal: React.FC<InvestorDeckModalProps> = ({
                   placeholder="e.g. Apex Global Growth Fund"
                   value={fundName}
                   onChange={(e) => setFundName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
+                  className="w-full px-3.5 py-3 min-h-[48px] text-base sm:text-xs rounded-lg bg-black/60 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-[#d8b485]"
                 />
               </div>
 
@@ -118,7 +119,7 @@ export const InvestorDeckModal: React.FC<InvestorDeckModalProps> = ({
                 <select
                   value={investorType}
                   onChange={(e) => setInvestorType(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded bg-black/60 border border-white/10 text-white focus:outline-none focus:border-[#d8b485]"
+                  className="w-full px-3.5 py-3 min-h-[48px] text-base sm:text-xs rounded-lg bg-black/60 border border-white/10 text-white focus:outline-none focus:border-[#d8b485] cursor-pointer"
                 >
                   <option value="venture" className="bg-zinc-900">Venture Capital / Growth Equity</option>
                   <option value="strategic" className="bg-zinc-900">Corporate Strategic / Logistics Operator</option>
@@ -131,7 +132,7 @@ export const InvestorDeckModal: React.FC<InvestorDeckModalProps> = ({
                 <button
                   type="submit"
                   disabled={isGenerating}
-                  className="w-full py-3 px-4 rounded text-xs font-bold font-mono tracking-wider text-zinc-950 bg-[#d8b485] hover:bg-[#c4a071] transition-all uppercase flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="w-full min-h-[48px] py-3 px-4 rounded-lg text-xs font-bold font-mono tracking-wider text-zinc-950 bg-[#d8b485] hover:bg-[#c4a071] transition-all uppercase flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 active:scale-98"
                 >
                   {isGenerating ? (
                     'Preparing Confidential Deck...'

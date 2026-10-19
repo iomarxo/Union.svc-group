@@ -13,10 +13,16 @@ import {
   Lock,
   Layers,
   Sparkles,
+  CheckCircle2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HeroNetworkCanvas } from './HeroNetworkCanvas';
 import { Language, translations } from '../translations';
+
+// High-fidelity image assets for real-time corridor telematics
+import heroSmartLogisticsImg from '../assets/images/hero_smart_logistics_1792232602542.jpg';
+import enterpriseDataNodeImg from '../assets/images/enterprise_data_node_1792232620653.jpg';
+import telematicsTransportImg from '../assets/images/telematics_transport_1792232621731.jpg';
 
 interface HeroProps {
   onExploreSolutions: () => void;
@@ -45,6 +51,7 @@ export const Hero: React.FC<HeroProps> = ({
 
   const corridors = [
     {
+      id: 'corridor-01',
       origin: 'Tokyo Hub (HND)',
       destination: 'Berlin Cargo Gateway (BER)',
       distance: '9,140 km',
@@ -55,8 +62,12 @@ export const Hero: React.FC<HeroProps> = ({
       cargo: 'High-Precision Automotive Castings',
       gps: '35.681°N, 139.767°E',
       temp: '+4.2°C',
+      image: heroSmartLogisticsImg,
+      fallbackImage: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+      imageAlt: 'Automated smart logistics terminal in Tokyo Hub at twilight',
     },
     {
+      id: 'corridor-02',
       origin: 'Rotterdam Port (RTM)',
       destination: 'Chicago Logistics Park (ORD)',
       distance: '6,680 km',
@@ -67,8 +78,12 @@ export const Hero: React.FC<HeroProps> = ({
       cargo: 'Pharma Cold-Chain Vaccines',
       gps: '51.924°N, 4.477°E',
       temp: '+3.8°C',
+      image: enterpriseDataNodeImg,
+      fallbackImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+      imageAlt: 'High-tech cold-chain facility and encrypted intermodal terminal',
     },
     {
+      id: 'corridor-03',
       origin: 'London Gateway (LHR)',
       destination: 'Singapore Changi (SIN)',
       distance: '10,870 km',
@@ -79,8 +94,19 @@ export const Hero: React.FC<HeroProps> = ({
       cargo: 'Aerospace Titanium Assemblies',
       gps: '51.507°N, -0.127°E',
       temp: '+18.5°C',
+      image: telematicsTransportImg,
+      fallbackImage: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80',
+      imageAlt: 'Connected commercial avionics and aerospace transport fleet',
     },
   ];
+
+  // Preload images for seamless instant switching
+  useEffect(() => {
+    corridors.forEach((c) => {
+      const img = new Image();
+      img.src = c.image;
+    });
+  }, []);
 
   const current = corridors[activeCorridor];
 
@@ -203,10 +229,30 @@ export const Hero: React.FC<HeroProps> = ({
                 initial={{ opacity: 0, y: 12, filter: 'blur(3px)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 transition={{ duration: 0.65, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                className="text-sm sm:text-base md:text-lg text-zinc-300 font-light leading-relaxed mb-6 sm:mb-8 max-w-2xl"
+                className="text-sm sm:text-base md:text-lg text-zinc-300 font-light leading-relaxed mb-4 sm:mb-5 max-w-2xl"
               >
                 {t.subHeadline}
               </motion.p>
+
+              {/* Bullet-Point Economy: Scannable 3-5 word value badges */}
+              {t.bullets && t.bullets.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.46, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-6 sm:mb-8"
+                >
+                  {t.bullets.map((bullet, idx) => (
+                    <span
+                      key={`hero-bullet-${idx}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/50 border border-white/10 text-xs font-mono text-zinc-200"
+                    >
+                      <CheckCircle2 size={13} className="text-[#d8b485] shrink-0" />
+                      <span>{bullet}</span>
+                    </span>
+                  ))}
+                </motion.div>
+              )}
             </div>
 
             {/* Tactile Action Button Group with Mobile Touch Accessibility (min 48px) */}
@@ -254,10 +300,12 @@ export const Hero: React.FC<HeroProps> = ({
                   <button
                     key={`corridor-tab-${idx}`}
                     onClick={() => setActiveCorridor(idx)}
-                    className={`min-h-[44px] min-w-[44px] px-3 py-2 text-[11px] font-mono rounded-lg transition-colors cursor-pointer flex items-center justify-center ${
+                    title={`View Corridor 0${idx + 1}: ${c.origin} → ${c.destination}`}
+                    aria-label={`Select Corridor 0${idx + 1}`}
+                    className={`min-h-[48px] min-w-[48px] px-3.5 py-2.5 text-xs font-mono rounded-lg transition-all cursor-pointer flex items-center justify-center font-bold active:scale-95 ${
                       activeCorridor === idx
-                        ? 'bg-white/15 text-white font-medium border border-white/10 shadow-sm'
-                        : 'text-zinc-400 hover:text-white bg-white/5'
+                        ? 'bg-[#d8b485] text-zinc-950 border border-[#d8b485] shadow-[0_0_14px_rgba(216,180,133,0.45)] ring-2 ring-[#d8b485]/30'
+                        : 'text-zinc-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'
                     }`}
                   >
                     0{idx + 1}
@@ -267,14 +315,27 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* High-Resolution Visual Background with Real-time Radar Scanline */}
-            <div className="relative flex-1 min-h-[220px] overflow-hidden group">
-              <img
-                src="/src/assets/images/hero_smart_logistics_1792232602542.jpg"
-                alt="Automated smart logistics terminal at twilight"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c11] via-black/25 to-transparent" />
+            <div className="relative flex-1 min-h-[240px] sm:min-h-[280px] overflow-hidden group bg-zinc-950">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={current.id}
+                  src={current.image}
+                  alt={current.imageAlt}
+                  initial={{ opacity: 0, scale: 1.04 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (current.fallbackImage && target.src !== current.fallbackImage) {
+                      target.src = current.fallbackImage;
+                    }
+                  }}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </AnimatePresence>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c11] via-black/25 to-transparent pointer-events-none" />
 
               {/* Real-time Vertical Scanline Laser Beam */}
               <div

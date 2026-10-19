@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, ChevronDown, CheckCircle2, ShieldCheck, Cpu, Network } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Language, translations } from '../translations';
+import controlTowerImg from '../assets/images/control_tower_operations_1792232601649.jpg';
 
 interface AboutSectionProps {
   onExploreTech: () => void;
@@ -50,9 +51,24 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-4 sm:mb-6">
             {t.title}
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-zinc-300 font-light leading-relaxed">
-            <strong className="text-white font-semibold">Unionsvc Group</strong> is a leading logistics technology company empowering global supply chains through a secure, highly reliable digital brokerage platform. By combining predictive AI, end-to-end communication encryption, and seamless enterprise system integration, we deliver an unprecedented logistics and resource management experience for high-stakes industries and corporate sectors.
+          <p className="text-sm sm:text-base md:text-lg text-zinc-300 font-light leading-relaxed mb-5">
+            {t.lead}
           </p>
+
+          {/* Bullet-Point Economy: 3-5 words per bullet */}
+          {t.bullets && t.bullets.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono text-xs pt-1">
+              {t.bullets.map((bullet, idx) => (
+                <div
+                  key={`about-bullet-${idx}`}
+                  className="flex items-center gap-2 p-2.5 rounded-lg bg-black/40 border border-white/5 text-zinc-200"
+                >
+                  <CheckCircle2 size={14} className="text-[#d8b485] shrink-0" />
+                  <span>{bullet}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </motion.div>
 
         {/* Asymmetric Composition: Visual Operations Control + Interactive Architecture Dossier */}
@@ -66,7 +82,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
             className="lg:col-span-5 rounded-xl overflow-hidden border border-white/10 relative min-h-[340px] lg:min-h-full flex flex-col justify-end group shadow-xl"
           >
             <img
-              src="/src/assets/images/control_tower_operations_1792232601649.jpg"
+              src={controlTowerImg}
               alt="Unionsvc Group Global Control Operations Tower"
               referrerPolicy="no-referrer"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
