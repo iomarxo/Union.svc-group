@@ -12,7 +12,7 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { RequestDemoModal } from './components/RequestDemoModal';
 import { ClientLoginModal } from './components/ClientLoginModal';
-import { InvestorDeckModal } from './components/InvestorDeckModal';
+import { InvestorApplicationModal } from './components/InvestorApplicationModal';
 import { TermsPrivacyModal } from './components/TermsPrivacyModal';
 import { Language } from './translations';
 
@@ -152,7 +152,7 @@ export default function App() {
         lang={lang}
       />
 
-      <InvestorDeckModal
+      <InvestorApplicationModal
         isOpen={investorDeckModalOpen}
         onClose={() => setInvestorDeckModalOpen(false)}
         lang={lang}

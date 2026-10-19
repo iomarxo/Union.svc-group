@@ -120,6 +120,30 @@ export interface TranslationDictionary {
       label: string;
       subtext: string;
     }[];
+    application: {
+      sectionTitle: string;
+      subtitle: string;
+      securityBadge: string;
+      fieldEntity: string;
+      fieldEntityPlaceholder: string;
+      fieldType: string;
+      typeOptions: { value: string; label: string }[];
+      fieldAllocation: string;
+      allocationOptions: { id: string; label: string; range: string }[];
+      fieldEmail: string;
+      fieldEmailPlaceholder: string;
+      fieldPhone: string;
+      fieldPhonePlaceholder: string;
+      fieldNote: string;
+      fieldNotePlaceholder: string;
+      submitBtn: string;
+      submittingBtn: string;
+      successTitle: string;
+      successMessage: string;
+      successRefLabel: string;
+      successEmailNotice: string;
+      successClose: string;
+    };
   };
   contact: {
     kicker: string;
@@ -353,8 +377,8 @@ export const translations: Record<Language, TranslationDictionary> = {
     },
     investors: {
       kicker: 'Investment Opportunity & Financial Model',
-      title: 'Why Invest in Unionsvc Group?',
-      subtitle: 'Disrupting the $4.2T global freight economy with high-margin software economics and cryptographic defensibility.',
+      title: 'Investor Relations | Partner with Unionsvc Group',
+      subtitle: 'Join our Series A funding round and participate in scaling the next-generation encrypted neural network for enterprise logistics.',
       ctaButton: 'Download Pitch Deck',
       points: [
         {
@@ -397,6 +421,39 @@ export const translations: Record<Language, TranslationDictionary> = {
         { value: '138%', label: 'Net Retention', subtext: 'Annual contract expansion' },
         { value: '3.8x', label: 'YoY Growth', subtext: 'Carrier network throughput' },
       ],
+      application: {
+        sectionTitle: 'Investor Relations | Partner with Unionsvc Group',
+        subtitle: 'Join our Series A funding round and participate in scaling the next-generation encrypted neural network for enterprise logistics.',
+        securityBadge: '🔒 SECURE DATA ROOM ACCESS | AES-256 Encrypted Submission',
+        fieldEntity: 'Full Name / Entity Name',
+        fieldEntityPlaceholder: 'Full Name or Fund Name',
+        fieldType: 'Investor Type',
+        typeOptions: [
+          { value: 'angel', label: 'Accredited Angel Investor' },
+          { value: 'vc', label: 'Venture Capital Fund (VC)' },
+          { value: 'strategic', label: 'Corporate / Strategic Partner' },
+          { value: 'family_office', label: 'Family Office' },
+        ],
+        fieldAllocation: 'Target Investment Allocation',
+        allocationOptions: [
+          { id: 'tier1', label: '$10,000 – $250,000', range: '$10,000 – $250,000' },
+          { id: 'tier2', label: '$250,000 – $1,000,000', range: '$250,000 – $1,000,000' },
+          { id: 'tier3', label: '$1,000,000+', range: '$1,000,000+' },
+        ],
+        fieldEmail: 'Official Email Address',
+        fieldEmailPlaceholder: 'partner@fund.com or official work email',
+        fieldPhone: 'Phone Number / WhatsApp',
+        fieldPhonePlaceholder: '+1 (555) 019-2834 (with country code)',
+        fieldNote: 'Brief background or strategic synergy',
+        fieldNotePlaceholder: 'Brief background or strategic synergy / Optional',
+        submitBtn: 'Request Series A Data Room Access ➔',
+        submittingBtn: 'Encrypting Credentials & Routing...',
+        successTitle: 'Application Received & Encrypted',
+        successMessage: 'Thank you for your interest in Unionsvc Group. Our Investor Relations team will review your credentials and provide secure Data Room access within 24 hours.',
+        successRefLabel: 'Transmission Reference Hash:',
+        successEmailNotice: 'Routed securely to Contact@unionsvc.com',
+        successClose: 'Return to Platform',
+      },
     },
     contact: {
       kicker: 'Direct Inquiries & Executive Engagement',
@@ -638,8 +695,8 @@ export const translations: Record<Language, TranslationDictionary> = {
     },
     investors: {
       kicker: 'الفرصة الاستثمارية والبنية المالية',
-      title: 'لماذا تستثمر في مجموعة Unionsvc Group؟',
-      subtitle: 'إعادة ابتكار اقتصاد الشحن العالمي المقدر بـ 4.2 تريليون دولار بهوامش ربح برمجية مرتفعة وخندق تقني منيع.',
+      title: 'علاقات المستثمرين | الشراكة مع Unionsvc Group',
+      subtitle: 'انضم إلى جولة التمويل الاستثماري (Series A) وشارك في توسيع الشبكة العصبية المشفرة للوجستيات المؤسسات.',
       ctaButton: 'تحميل العرض الاستثماري',
       points: [
         {
@@ -682,6 +739,39 @@ export const translations: Record<Language, TranslationDictionary> = {
         { value: '138%', label: 'معدل استبقاء الإيرادات', subtext: 'توسع عقود كبار العملاء' },
         { value: '3.8 أضعاف', label: 'النمو السنوي في الشحنات', subtext: 'توسع شبكة الشاحنات' },
       ],
+      application: {
+        sectionTitle: 'علاقات المستثمرين | الشراكة مع Unionsvc Group',
+        subtitle: 'انضم إلى جولة التمويل الاستثماري (Series A) وشارك في توسيع الشبكة العصبية المشفرة للوجستيات المؤسسات.',
+        securityBadge: '🔒 دخول آمن لغرفة البيانات | إرسال مشفر بمعيار AES-256',
+        fieldEntity: 'الاسم الكامل / اسم الصندوق أو الكيان',
+        fieldEntityPlaceholder: 'الاسم الكامل أو اسم صندوق الاستثمار',
+        fieldType: 'تصنيف المستثمر',
+        typeOptions: [
+          { value: 'angel', label: 'مستثمر ملائكي معتمد (Accredited Angel)' },
+          { value: 'vc', label: 'صندوق رأس مال جريء (VC)' },
+          { value: 'strategic', label: 'شريك استراتيجي / شركات كبرى' },
+          { value: 'family_office', label: 'مكتب عائلي / ثروات سيادية' },
+        ],
+        fieldAllocation: 'مبلغ التخصيص الاستثماري المستهدف',
+        allocationOptions: [
+          { id: 'tier1', label: '10,000$ – 250,000$', range: '10,000$ – 250,000$' },
+          { id: 'tier2', label: '250,000$ – 1,000,000$', range: '250,000$ – 1,000,000$' },
+          { id: 'tier3', label: '+1,000,000$', range: 'أكثر من 1,000,000$' },
+        ],
+        fieldEmail: 'البريد الإلكتروني الرسمي',
+        fieldEmailPlaceholder: 'partner@fund.com أو البريد المؤسسي الرسمي',
+        fieldPhone: 'رقم الهاتف / واتساب',
+        fieldPhonePlaceholder: '+966 50 123 4567 (مع رمز الدولة)',
+        fieldNote: 'ملاحظة أو مجالات التوافق الاستراتيجي',
+        fieldNotePlaceholder: 'نبذة موجزة أو آفاق التعاون الاستراتيجي / اختياري',
+        submitBtn: 'طلب دخول غرفة بيانات الجولة A ➔',
+        submittingBtn: 'جاري التشفير وإرسال البيانات...',
+        successTitle: 'تم استلام الطلب وتشفيره بنجاح',
+        successMessage: 'شكراً لاهتمامكم بالاستثمار في مجموعة Unionsvc Group. سيقوم فريق علاقات المستثمرين لدينا بمراجعة بياناتكم وتزويدكم بالدخول الآمن لغرفة البيانات خلال 24 ساعة.',
+        successRefLabel: 'رمز الإرسال التشفيري المعتمد:',
+        successEmailNotice: 'تم التوجيه بأمان إلى Contact@unionsvc.com',
+        successClose: 'العودة للمنصة',
+      },
     },
     contact: {
       kicker: 'التواصل المباشر والشراكات التنفيذية',

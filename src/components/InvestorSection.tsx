@@ -3,6 +3,7 @@ import { Download, ArrowUpRight, TrendingUp, CheckCircle2, ShieldCheck } from 'l
 import { motion } from 'framer-motion';
 import { Language, translations } from '../translations';
 import telematicsTransportImg from '../assets/images/telematics_transport_1792232621731.jpg';
+import { InvestorApplicationForm } from './InvestorApplicationForm';
 
 interface InvestorSectionProps {
   onRequestInvestmentDeck: () => void;
@@ -200,6 +201,18 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
             <span>{t.ctaButton}</span>
           </button>
         </div>
+
+        {/* High-Converting Enterprise-Grade Investor Application Form Section (Desktop & Mobile) */}
+        <motion.div
+          id="investor-application"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-12 sm:mt-16"
+        >
+          <InvestorApplicationForm lang={lang} />
+        </motion.div>
       </div>
     </section>
   );
