@@ -47,13 +47,8 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
     <section id="investors" className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         {/* Section Header with whileInView reveal */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16"
-        >
+        {/* Section Header - Calm & Steady */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
           <div className="max-w-3xl">
             <div className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-3">
               {t.kicker}
@@ -73,16 +68,10 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
             <Download size={15} />
             <span>{t.ctaButton}</span>
           </button>
-        </motion.div>
+        </div>
 
         {/* Institutional Financial Memo: Theses on Left + Comparative Unit Economics on Right */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-14"
-        >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-14">
           {/* Left Column (6 Cols): The 3 Strategic Theses */}
           <div className="lg:col-span-6 flex flex-col justify-between gap-4">
             {t.points.map((point, idx) => (
@@ -170,7 +159,7 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Commercial Transport Carrier Visual + Pitch Deck Callout */}
         <div className="p-6 sm:p-8 rounded-xl bg-[#0c0c12] border border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-6">
@@ -180,6 +169,13 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
                 src={telematicsTransportImg}
                 alt="Connected fleet transport"
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                onError={(e) => {
+                  const fallback = 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80';
+                  if (e.currentTarget.src !== fallback) {
+                    e.currentTarget.src = fallback;
+                  }
+                }}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -202,17 +198,10 @@ export const InvestorSection: React.FC<InvestorSectionProps> = ({
           </button>
         </div>
 
-        {/* High-Converting Enterprise-Grade Investor Application Form Section (Desktop & Mobile) */}
-        <motion.div
-          id="investor-application"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-12 sm:mt-16"
-        >
+        {/* High-Converting Enterprise-Grade Investor Application Form Section (Desktop & Mobile) - Calm & Steady */}
+        <div id="investor-application" className="mt-12 sm:mt-16">
           <InvestorApplicationForm lang={lang} />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { LivePerformanceTicker } from './components/LivePerformanceTicker';
@@ -23,14 +22,6 @@ export default function App() {
       if (saved === 'en' || saved === 'ar') return saved;
     }
     return 'en';
-  });
-
-  // Smooth scroll depth progress tracking
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
   });
 
   // Modal states
@@ -60,19 +51,15 @@ export default function App() {
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: 'auto' });
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] relative text-zinc-300 antialiased selection:bg-[#d8b485]/30 selection:text-white overflow-x-hidden font-sans flex flex-col">
-      {/* Subtle Slim Scroll Depth Progress Bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#d8b485] via-[#f3e3ce] to-[#d8b485] z-[60] pointer-events-none shadow-[0_0_8px_rgba(216,180,133,0.5)]"
-        style={{
-          scaleX,
-          transformOrigin: lang === 'ar' ? '100% 50%' : '0% 50%',
-        }}
+    <div className="min-h-screen bg-[#09090b] relative text-zinc-300 antialiased selection:bg-[#d8b485]/30 selection:text-white overflow-x-hidden font-sans flex flex-col [scroll-behavior:auto]">
+      {/* Calm, Stable Header Border Accent */}
+      <div
+        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#d8b485]/60 to-transparent z-[60] pointer-events-none"
         aria-hidden="true"
       />
 

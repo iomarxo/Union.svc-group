@@ -476,7 +476,8 @@ export const GlobalNetworkGlobe: React.FC<GlobalNetworkGlobeProps> = ({
       if (controls) {
         controls.autoRotate = isAutoRotating;
         controls.autoRotateSpeed = orbitSpeed;
-        controls.enableZoom = true;
+        // Disable mouse-wheel scroll hijacking so the page scrolls calmly and smoothly
+        controls.enableZoom = false;
       }
       // Initial focal viewpoint centered on Riyadh, Cairo, and Accra region
       globeRef.current.pointOfView({ lat: 22.0, lng: 34.0, altitude: 2.15 }, 1200);

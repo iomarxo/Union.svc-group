@@ -24,14 +24,8 @@ export const VisionMissionSection: React.FC<VisionMissionSectionProps> = ({ lang
   return (
     <section className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-        {/* Section Header with whileInView reveal */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-10 sm:mb-14"
-        >
+        {/* Section Header - Calm & Steady */}
+        <div className="max-w-3xl mb-10 sm:mb-14">
           <div className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-3">
             {t.kicker}
           </div>
@@ -41,18 +35,12 @@ export const VisionMissionSection: React.FC<VisionMissionSectionProps> = ({ lang
           <p className="text-sm sm:text-base text-zinc-400 font-light leading-relaxed">
             {t.subtitle}
           </p>
-        </motion.div>
+        </div>
 
-        {/* Vision & Mission Symmetrical Editorial Cards with Staggered Entrance */}
+        {/* Vision & Mission Symmetrical Editorial Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16">
           {/* Card 1: Our Vision */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="p-6 sm:p-10 rounded-xl bg-[#0e0e15] border border-white/[0.08] flex flex-col justify-between hover:border-[#d8b485]/30 transition-colors shadow-lg"
-          >
+          <div className="p-6 sm:p-10 rounded-xl bg-[#0e0e15] border border-white/[0.08] flex flex-col justify-between hover:border-[#d8b485]/30 transition-colors shadow-lg">
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 text-[#d8b485]">
@@ -77,16 +65,10 @@ export const VisionMissionSection: React.FC<VisionMissionSectionProps> = ({ lang
               <span>Goal: Sovereign Neural Backbone</span>
               <span className="text-white">Pillar 01</span>
             </div>
-          </motion.div>
+          </div>
 
           {/* Card 2: Our Mission */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="p-8 sm:p-10 rounded-xl bg-[#0e0e15] border border-white/[0.08] flex flex-col justify-between hover:border-emerald-500/30 transition-colors shadow-lg"
-          >
+          <div className="p-8 sm:p-10 rounded-xl bg-[#0e0e15] border border-white/[0.08] flex flex-col justify-between hover:border-emerald-500/30 transition-colors shadow-lg">
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 text-emerald-400">
@@ -111,18 +93,12 @@ export const VisionMissionSection: React.FC<VisionMissionSectionProps> = ({ lang
               <span>Mandate: Zero Waste & Parity</span>
               <span className="text-white">Pillar 02</span>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Societal & Economic Impact: 3 Concrete Proof Pillars with Staggered Entrance */}
+        {/* Societal & Economic Impact: 3 Concrete Proof Pillars */}
         <div className="mb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-2xl mb-8"
-          >
+          <div className="max-w-2xl mb-8">
             <div className="text-xs font-mono text-emerald-400 tracking-wider uppercase mb-2">
               {t.impactKicker}
             </div>
@@ -132,20 +108,12 @@ export const VisionMissionSection: React.FC<VisionMissionSectionProps> = ({ lang
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-light">
               {t.impactSubtitle}
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {t.impactItems.map((item, idx) => (
-              <motion.div
+              <div
                 key={`impact-col-${idx}`}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{
-                  duration: 0.55,
-                  delay: idx * 0.12,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
                 className="p-6 sm:p-7 rounded-xl bg-[#0c0c11] border border-white/[0.07] flex flex-col justify-between hover:border-white/15 transition-all shadow-md group"
               >
                 <div>
@@ -168,19 +136,13 @@ export const VisionMissionSection: React.FC<VisionMissionSectionProps> = ({ lang
                     {item.statLabel}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Interactive Macro ROI & Carbon Savings Estimator with whileInView reveal */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="p-6 sm:p-8 rounded-xl bg-[#0e0e15] border border-white/[0.08] shadow-xl"
-        >
+        {/* Interactive Macro ROI & Carbon Savings Estimator */}
+        <div className="p-6 sm:p-8 rounded-xl bg-[#0e0e15] border border-white/[0.08] shadow-xl">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-6 border-b border-white/5">
             <div>
               <div className="flex items-center gap-2 text-xs font-mono text-[#d8b485] uppercase tracking-wider mb-1">
@@ -262,7 +224,7 @@ export const VisionMissionSection: React.FC<VisionMissionSectionProps> = ({ lang
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

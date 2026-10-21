@@ -175,10 +175,10 @@ export const InvestorApplicationModal: React.FC<InvestorApplicationModalProps> =
       }}
     >
       <div className="relative w-full max-w-2xl my-auto py-4 sm:py-8">
-        <div className="relative rounded-xl bg-[#0e0e15] border border-white/[0.08] hover:border-white/15 shadow-2xl overflow-hidden text-left">
+        <div className="relative rounded-xl bg-[#0c0c12] border border-white/[0.08] hover:border-[#d8b485]/30 shadow-2xl overflow-hidden text-left">
           {/* Ambient Corner Glows matching landing page */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-[#d8b485]/5 rounded-full blur-[90px] pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[90px] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-900/10 rounded-full blur-[90px] pointer-events-none" />
 
           {/* Close 'X' Button */}
           <button
@@ -308,7 +308,7 @@ export const InvestorApplicationModal: React.FC<InvestorApplicationModalProps> =
                 {/* Header Area */}
                 <div className="mb-7 pr-8">
                   {/* Security Badge */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#d8b485] text-[11px] sm:text-xs font-mono font-semibold tracking-wide shadow-sm mb-3">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#d8b485]/10 border border-[#d8b485]/30 text-[#d8b485] text-[11px] sm:text-xs font-mono font-semibold tracking-wide shadow-sm mb-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     <span>{t.securityBadge}</span>
                   </div>

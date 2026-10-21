@@ -333,20 +333,20 @@ export const InvestorApplicationForm: React.FC<InvestorApplicationFormProps> = (
             </div>
           </motion.div>
         ) : (
-          /* High-Converting Form View */
+          /* High-Converting Form View - Unified with Landing Page Theme */
           <motion.div
             key="application-form"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.4 }}
-            className={`rounded-xl bg-[#0e0e15] border border-white/[0.08] hover:border-white/15 p-6 sm:p-10 shadow-2xl relative overflow-hidden transition-all ${
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className={`rounded-xl bg-[#0c0c12] border border-white/[0.08] hover:border-[#d8b485]/30 p-6 sm:p-10 shadow-2xl relative overflow-hidden transition-all ${
               isModalView ? 'max-w-2xl w-full' : 'w-full'
             }`}
           >
             {/* Top Atmospheric Corner Accents matching landing page */}
             <div className="absolute top-0 right-0 w-72 h-72 bg-[#d8b485]/5 rounded-full blur-[80px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-72 h-72 bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-900/10 rounded-full blur-[80px] pointer-events-none" />
 
             {/* Modal Close Button */}
             {isModalView && onClose && (
@@ -363,7 +363,7 @@ export const InvestorApplicationForm: React.FC<InvestorApplicationFormProps> = (
             {/* Header Area */}
             <div className="relative z-10 mb-8 text-left">
               {/* Header Security Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#d8b485] text-[11px] sm:text-xs font-mono font-semibold tracking-wide shadow-sm mb-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#d8b485]/10 border border-[#d8b485]/30 text-[#d8b485] text-[11px] sm:text-xs font-mono font-semibold tracking-wide shadow-sm mb-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>{t.securityBadge}</span>
               </div>

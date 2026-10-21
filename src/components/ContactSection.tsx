@@ -70,13 +70,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           {/* Left Column (5 Cols): Interactive Operations Hubs & Direct Channels */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5"
-          >
+          <div className="lg:col-span-5">
             <div className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-3">
               {t.kicker}
             </div>
@@ -165,16 +159,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Column (7 Cols): Enterprise Intake Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7"
-          >
+          <div className="lg:col-span-7">
             <div className="p-7 sm:p-9 rounded-xl bg-[#0e0e15] border border-white/[0.08] shadow-xl relative">
               {isSubmitted ? (
                 <div className="py-12 text-center flex flex-col items-center">
@@ -291,7 +279,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                 </form>
               )}
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

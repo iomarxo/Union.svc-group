@@ -82,37 +82,13 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
     },
   };
 
-  // Real-time dispatch and ERP synchronization loops
-  useEffect(() => {
-    const liveMatchInterval = setInterval(() => {
-      setLiveMatchesCount((prev) => prev + 1);
-      setErpSyncCounter((prev) => prev + 1);
-      setErpTimestamp(new Date().toISOString());
-
-      // Slight latency oscillation
-      setLiveErpLatency(+(11 + (Math.random() * 0.8 - 0.4)).toFixed(1));
-
-      const samples = [
-        'Riyadh Sovereign Gateway &rarr; Cairo Suez Hub: 32.0t Petrochem matched in 19s (Carrier 710-KSA, SAR 184,000)',
-        'Cairo Gateway &rarr; Accra AfCFTA Hub: 18.5t Medical Diagnostics locked in 24s (Carrier 088-GH, $4,850)',
-        'Accra Atlantic Terminal &rarr; London: 26.0t Agricultural Commodities matched in 31s (Carrier 209-UK, £3,920)',
-        'Tokyo Port &rarr; Nagoya: 28.4t Castings matched in 34s (Carrier 094-JP, ¥482,000)',
-        'Riyadh Sovereign &rarr; Dubai DWC: 12.0t Avionics matched in 14s (Carrier 330-ME, AED 42,500)',
-        'Cairo Gateway &rarr; Berlin Gateway: 22.0t Precision Robotics matched in 18s (Carrier 114-DE, €3,200)',
-      ];
-      setLiveOrderTicker(samples[Math.floor(Math.random() * samples.length)]);
-    }, 2800);
-
-    return () => clearInterval(liveMatchInterval);
-  }, []);
-
   const handleSimulateMatch = (type: 'sovereign' | 'automotive' | 'pharma' | 'aerospace') => {
     setCargoType(type);
     setIsMatching(true);
     setTimeout(() => {
       setIsMatching(false);
       setMatchDone(true);
-    }, 450);
+    }, 300);
   };
 
   const erpPayloads = {
@@ -171,16 +147,10 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
   return (
     <section id="solutions" className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-        {/* Section Header with whileInView reveal */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-10 sm:mb-14"
-        >
+        {/* Section Header - Calm & Steady */}
+        <div className="max-w-3xl mb-10 sm:mb-14">
           <div className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-3 flex items-center gap-2">
-            <Radio size={13} className="animate-pulse text-[#d8b485]" />
+            <Radio size={13} className="text-[#d8b485]" />
             <span>{t.kicker}</span>
             <span className="text-zinc-500">·</span>
             <span className="text-emerald-400 font-bold tabular-nums">LIVE AI ENGINE ACTIVE</span>
@@ -191,18 +161,12 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
           <p className="text-sm sm:text-base text-zinc-400 font-light leading-relaxed">
             {t.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         {/* Dynamic Bento-Grid Architecture (Asymmetric & Non-Repetitive) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 mb-12">
           {/* BENTO TILE 1 (Col-Span-7): AI-Powered Smart Freight Brokerage + Live Dispatch Matcher */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 p-7 sm:p-8 rounded-xl bg-[#0e0e16] border border-white/[0.08] flex flex-col justify-between group hover:border-[#d8b485]/30 transition-all"
-          >
+          <div className="lg:col-span-7 p-7 sm:p-8 rounded-xl bg-[#0e0e16] border border-white/[0.08] flex flex-col justify-between group hover:border-[#d8b485]/30 transition-all">
             <div>
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/5">
                 <div className="flex items-center gap-2.5">
@@ -314,16 +278,10 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* BENTO TILE 2 (Col-Span-5): Ultra-Secure & Encrypted Communications */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 p-7 sm:p-8 rounded-xl bg-[#0c0c12] border border-white/[0.08] flex flex-col justify-between group hover:border-emerald-500/30 transition-all"
-          >
+          <div className="lg:col-span-5 p-7 sm:p-8 rounded-xl bg-[#0c0c12] border border-white/[0.08] flex flex-col justify-between group hover:border-emerald-500/30 transition-all">
             <div>
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/5">
                 <div className="flex items-center gap-2.5">
@@ -371,16 +329,10 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
                 <span className="text-emerald-400">FIPS 140-3 HSM Root of Trust</span>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* BENTO TILE 3 (Col-Span-5): High Reliability & Zero-Downtime Operations */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 p-7 sm:p-8 rounded-xl bg-[#0c0c12] border border-white/[0.08] flex flex-col justify-between group hover:border-purple-500/30 transition-all"
-          >
+          <div className="lg:col-span-5 p-7 sm:p-8 rounded-xl bg-[#0c0c12] border border-white/[0.08] flex flex-col justify-between group hover:border-purple-500/30 transition-all">
             <div>
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/5">
                 <div className="flex items-center gap-2.5">
@@ -430,16 +382,10 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* BENTO TILE 4 (Col-Span-7): Enterprise System Integration (Unified API) + ERP Matrix */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 p-7 sm:p-8 rounded-xl bg-[#0e0e16] border border-white/[0.08] flex flex-col justify-between group hover:border-cyan-500/30 transition-all"
-          >
+          <div className="lg:col-span-7 p-7 sm:p-8 rounded-xl bg-[#0e0e16] border border-white/[0.08] flex flex-col justify-between group hover:border-cyan-500/30 transition-all">
             <div>
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/5">
                 <div className="flex items-center gap-2.5">
@@ -523,27 +469,16 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
                 {curErp.json}
               </pre>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Interactive Global Network & Corridors Visualization (D3.js Globe & Equirectangular Map) */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <div>
           <GlobalNetworkGlobe lang={lang} />
-        </motion.div>
+        </div>
 
-        {/* Action Callout with whileInView reveal */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-white/[0.08]"
-        >
+        {/* Action Callout */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
           <span className="text-xs font-mono text-zinc-400">
             Certified integration adapters available for enterprise SAP NetWeaver, Oracle Fusion SCM, and Microsoft Dataverse.
           </span>
@@ -554,7 +489,7 @@ export const SolutionsTechSection: React.FC<SolutionsTechSectionProps> = ({
             <span>Request Full API Documentation & Sandbox</span>
             <ArrowRight size={14} />
           </button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -222,14 +222,8 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
           </div>
         </div>
 
-        {/* High-Density Telemetry Ticker Ledger (Responsive Grid for Mobile & Desktop) */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6"
-        >
+        {/* High-Density Telemetry Ticker Ledger (Responsive Grid for Mobile & Desktop) - Calm & Steady */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
           {/* 1. Transactions Processed */}
           <div className="p-4 sm:p-5 rounded-lg bg-[#0c0c11] border border-white/[0.06] flex flex-col justify-between relative overflow-hidden group hover:border-white/15 transition-all">
             <div className="flex items-center justify-between text-xs font-mono text-zinc-400 mb-2">
@@ -238,9 +232,6 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
             </div>
             <div className="text-2xl sm:text-3xl font-bold font-mono text-white tabular-nums tracking-tight flex items-baseline gap-1">
               <span>{transactions.toLocaleString()}</span>
-              {pulseMetric === 'tx' && (
-                <span className="text-[10px] text-emerald-400 font-mono animate-bounce">+1</span>
-              )}
             </div>
             <div className="text-[10px] text-zinc-500 font-mono mt-2 pt-2 border-t border-white/5 truncate flex items-center justify-between">
               <span>{t.transactionsDetail}</span>
@@ -305,7 +296,7 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
               {t.latencyDetail}
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Live Streaming Audit Log Stream (Continuous Real-Time Feeds) */}
         <div className="mt-4 p-3.5 rounded-lg bg-black/60 border border-white/[0.06] font-mono text-xs">
@@ -322,18 +313,19 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
             </div>
           </div>
 
-          <div className="space-y-1.5 overflow-hidden">
+          {/* Fixed-height container to eliminate all layout shifts and page moving */}
+          <div className="h-[116px] min-h-[116px] overflow-hidden space-y-1.5 relative">
             <AnimatePresence initial={false}>
-              {eventLog.map((evt) => (
+              {eventLog.slice(0, 3).map((evt) => (
                 <motion.div
                   key={evt.id}
-                  initial={{ opacity: 0, x: -10, height: 0 }}
-                  animate={{ opacity: 1, x: 0, height: 'auto' }}
-                  exit={{ opacity: 0, x: 10, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-[11px] p-2 rounded bg-black/40 border border-white/5"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="flex flex-row items-center justify-between gap-2 text-[11px] px-2.5 py-1.5 rounded bg-black/40 border border-white/5 h-[34px] min-h-[34px] overflow-hidden"
                 >
-                  <div className="flex items-center gap-2 overflow-hidden">
+                  <div className="flex items-center gap-2 overflow-hidden min-w-0">
                     <span
                       className={`text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 ${
                         evt.category === 'CIPHER'
@@ -347,12 +339,12 @@ export const LivePerformanceTicker: React.FC<LivePerformanceTickerProps> = ({ la
                     >
                       {evt.category}
                     </span>
-                    <span className="text-zinc-200 truncate">{evt.message}</span>
+                    <span className="text-zinc-200 truncate font-mono text-[11px]">{evt.message}</span>
                   </div>
-                  <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto text-[10px] text-zinc-500">
-                    <span className="tabular-nums">{evt.timestamp}</span>
+                  <div className="flex items-center gap-2 shrink-0 text-[10px] text-zinc-500">
+                    <span className="tabular-nums hidden sm:inline">{evt.timestamp}</span>
                     <span
-                      className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
+                      className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${
                         evt.status === 'VERIFIED'
                           ? 'text-emerald-400 bg-emerald-500/10'
                           : evt.status === 'COMMITTED'

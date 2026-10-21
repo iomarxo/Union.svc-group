@@ -193,30 +193,16 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [isAutoCycling, setIsAutoCycling] = useState(true);
   const containerRef = useRef<HTMLDivElement | null>(null);
-
-  // Auto cycle through case studies when not actively hovered
-  useEffect(() => {
-    if (!isAutoCycling || hoveredCardId !== null) return;
-
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % CASE_STUDIES.length);
-    }, 6000);
-
-    return () => clearInterval(timer);
-  }, [isAutoCycling, hoveredCardId]);
 
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   const handleNext = () => {
-    setIsAutoCycling(false);
     setActiveIndex((prev) => (prev + 1) % CASE_STUDIES.length);
   };
 
   const handlePrev = () => {
-    setIsAutoCycling(false);
     setActiveIndex((prev) => (prev - 1 + CASE_STUDIES.length) % CASE_STUDIES.length);
   };
 
@@ -244,15 +230,9 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
   return (
     <section id="case-studies" className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-        {/* Section Header */}
+        {/* Section Header - Calm, Steady, No Vertical Jitter */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-3xl"
-          >
+          <div className="max-w-3xl">
             <div className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-3 flex items-center gap-2">
               <Sparkles size={13} className="text-[#d8b485]" />
               <span>Verified Enterprise Deployments · Production Evidence</span>
@@ -263,7 +243,7 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
             <p className="text-sm sm:text-base text-zinc-400 font-light leading-relaxed">
               Explore how leading aerospace, pharmaceutical, and automotive enterprises secure multi-billion dollar supply chain operations using Union|svc Group’s encrypted brokerage ecosystem.
             </p>
-          </motion.div>
+          </div>
 
           {/* Carousel Navigation Controls with 48x48px Touch Targets */}
           <div className="flex items-center gap-3 font-mono text-xs self-start md:self-auto">
@@ -314,7 +294,7 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
                   key={study.id}
                   onMouseEnter={() => setHoveredCardId(study.id)}
                   onMouseLeave={() => setHoveredCardId(null)}
-                  className="w-full shrink-0 rounded-xl bg-[#0c0c12] border border-white/[0.08] hover:border-[#d8b485]/40 transition-all duration-300 overflow-hidden shadow-2xl flex flex-col lg:flex-row group"
+                  className="w-full shrink-0 rounded-xl bg-[#0c0c12] border border-white/[0.08] hover:border-[#d8b485]/40 transition-all duration-300 overflow-hidden shadow-2xl flex flex-col lg:flex-row group min-h-[460px] sm:min-h-[480px] lg:min-h-[500px]"
                 >
                   {/* Left Column (5 Cols on Desktop): Visual Showcase & Real-Time Operational HUD */}
                   <div className="lg:w-5/12 relative min-h-[280px] lg:min-h-full flex flex-col justify-between p-6 sm:p-7 overflow-hidden">
@@ -322,6 +302,13 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
                       src={study.image}
                       alt={study.clientTitle}
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      onError={(e) => {
+                        const fallback = 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80';
+                        if (e.currentTarget.src !== fallback) {
+                          e.currentTarget.src = fallback;
+                        }
+                      }}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
@@ -477,7 +464,6 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({
               <button
                 key={`indicator-${i}`}
                 onClick={() => {
-                  setIsAutoCycling(false);
                   setActiveIndex(i);
                 }}
                 className="min-h-[48px] min-w-[36px] flex items-center justify-center cursor-pointer p-1"

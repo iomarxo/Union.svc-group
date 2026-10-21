@@ -37,14 +37,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
   return (
     <section id="about" className="py-16 sm:py-24 relative z-10 border-b border-white/[0.08] bg-[#09090b]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-        {/* Section Header with whileInView reveal */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-10 sm:mb-14"
-        >
+        {/* Section Header - Calm & Steady */}
+        <div className="max-w-3xl mb-10 sm:mb-14">
           <div className="text-xs font-mono text-[#d8b485] tracking-widest uppercase mb-3">
             {t.kicker}
           </div>
@@ -69,22 +63,23 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
               ))}
             </div>
           )}
-        </motion.div>
+        </div>
 
         {/* Asymmetric Composition: Visual Operations Control + Interactive Architecture Dossier */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-12">
-          {/* Left Column (5 Cols): Operations Center Visual Anchor with graceful whileInView reveal */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 rounded-xl overflow-hidden border border-white/10 relative min-h-[340px] lg:min-h-full flex flex-col justify-end group shadow-xl"
-          >
+          {/* Left Column (5 Cols): Operations Center Visual Anchor */}
+          <div className="lg:col-span-5 rounded-xl overflow-hidden border border-white/10 relative min-h-[340px] lg:min-h-full flex flex-col justify-end group shadow-xl">
             <img
               src={controlTowerImg}
               alt="Unionsvc Group Global Control Operations Tower"
               referrerPolicy="no-referrer"
+              loading="lazy"
+              onError={(e) => {
+                const fallback = 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80';
+                if (e.currentTarget.src !== fallback) {
+                  e.currentTarget.src = fallback;
+                }
+              }}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
@@ -99,7 +94,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
                 Operating hubs: Tokyo · Berlin · London · Global
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Column (7 Cols): Interactive Architecture Spec Dossier with Staggered Entrance Animations */}
           <div className="lg:col-span-7 flex flex-col justify-between gap-3">
@@ -108,16 +103,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
               const spec = tenetSpecs[idx];
 
               return (
-                <motion.div
+                <div
                   key={`pillar-${pillar.index}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{
-                    duration: 0.55,
-                    delay: idx * 0.12,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
                   className={`rounded-xl border transition-all duration-300 overflow-hidden ${
                     isActive
                       ? 'bg-[#0e0e16] border-[#d8b485]/40 shadow-lg'
@@ -179,20 +166,14 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
                       </div>
                     </div>
                   )}
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
 
-        {/* Quiet Footnote Rule with whileInView reveal */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-white/[0.08]"
-        >
+        {/* Quiet Footnote Rule */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
           <span className="text-xs font-mono text-zinc-400">
             Engineered for high-stakes enterprise supply chains, aerospace, pharmaceuticals, and industrial manufacturing.
           </span>
@@ -203,7 +184,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreTech, lang 
             <span>Explore Key Solutions & Tech Stack</span>
             <ArrowRight size={14} />
           </button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
